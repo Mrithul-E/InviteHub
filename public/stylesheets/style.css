@@ -1,0 +1,186 @@
+:root {
+  --light-bg: #F5F5F5;
+  --dark-bg: #303841;
+  --accent-purple: #B86DB8;
+  --accent-purple-dark: #7C3D8A;
+  --accent-pink: #E88ACB;
+  --accent-pink-light: #F7D6EE;
+}
+
+
+nav {
+  background-color: var(--light-bg);
+}
+
+.navbar-nav {
+  --bs-navbar-color: var(--dark-bg);
+  --bs-navbar-active-color: var(--accent-teal)
+}
+
+.nav-link.active {
+  border-bottom: 2px solid var(--dark-bg);
+  transform: scale(1.1);
+}
+
+.nav-link {
+  display: inline-block;
+  transition: transform 1s ease;
+}
+
+
+.nav-item {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.5px;
+  font-size: medium;
+  color: var(--accent-purple-dark);
+}
+
+#navbarSupportedContent ul {
+  gap: 50px;
+}
+
+nav .container-fluid {
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  #navbarSupportedContent {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-link:hover {
+    transform: scale(1.1);
+    border-bottom: 2px solid var(--dark-bg);
+  }
+}
+
+.hero-image {
+  background-image: url('/images/hero_bg.jpg');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  aspect-ratio: 21 / 9;
+  width: 100%;
+}
+
+
+#hero-icon {
+  width: 115px;
+  height: auto;
+}
+
+#logo-text {
+  font-family: "Poppins", sans-serif;
+  color: var(--accent-purple-dark);
+}
+
+#logo-text h1 {
+  font-weight: 600;
+}
+
+#logo-text h3 {
+  font-weight: 200;
+  font-size: larger;
+}
+
+.hero-details {
+  font-family: "Poppins", sans-serif;
+  color: var(--accent-purple-dark);
+}
+
+.hero-details h1 {
+  font-weight: 700;
+  font-size: 4rem;
+  color: var(--accent-purple-dark);
+
+}
+
+.hero-details h1 span {
+  background-image: linear-gradient(to right, #b44593, #f386c1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-details h3 {
+  font-weight: 400;
+  font-size: 21px;
+  color: var(--accent-purple-dark);
+
+}
+
+.hero-button-container {
+  display: flex;
+  gap: 15px;
+}
+
+.hero-button-container button {
+  width: 166px;
+  height: 49px;
+  border-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: large;
+  transition: transform 0.3s ease;
+}
+
+.hero-button-container button:hover {
+  transform: scale(1.1);
+}
+
+.purple-btn {
+  background-image: linear-gradient(to top, #b44593, #f386c1);
+  color: white;
+  border: none;
+}
+
+.white-btn {
+  border: var(--accent-purple) solid;
+  border-width: 1px;
+  color: var(--accent-purple-dark);
+}
+
+.hero-graphics {
+  height: 100%;
+}
+
+.hero-graphics img {
+  width: auto;
+  height: 100%;
+
+  animation: backandforth 4s linear infinite;
+}
+
+#loginPageContainer {
+  background-image: url("/images/loginPageBg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: calc(100vh - 86px);
+}
+
+#loginBox {
+  background-color: aqua;
+}
+
+@keyframes backandforth {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);  /* Moves right */
+  }
+  50% {
+    transform: rotate(0deg);  /* Passes smoothly through center */
+  }
+  75% {
+    transform: rotate(-2deg); /* Moves left */
+  }
+  100% {
+    transform: rotate(0deg); /* Blends perfectly back into 0% */
+  }
+}
