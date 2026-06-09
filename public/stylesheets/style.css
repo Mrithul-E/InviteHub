@@ -251,6 +251,14 @@ nav .container-fluid {
   width: 114px;
 }
 
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+#userClickableContainer {
+  cursor: pointer;
+}
+
 
 @keyframes backandforth {
   0% {

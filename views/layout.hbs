@@ -50,10 +50,10 @@
       <div id="nav-end-container" class="d-flex">
         {{#if isLoggedIn}}
         <div id="userContainer" class="d-flex">
-          <div class="d-flex">
+          <div class="d-flex align-items-center" id="userClickableContainer">
             <img src="{{userRecord.photoURL}}" alt="user profile picture" width="40" height="40"
               class="me-2 rounded-circle" id="userPicture">
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined" id="userMenuDrownArrow">
               keyboard_arrow_down
             </span>
           </div>
@@ -113,6 +113,8 @@
       const profilePicture = $("#userPicture")
       const img = profilePicture[0];
       const userMenu = $("#userMenu")
+      const userMenuDrownArrow = $('#userMenuDrownArrow')
+      const userContainer = $("#userContainer")
       const userDisplayName = "{{userRecord.displayName}}" 
 
       if (userDisplayName) {
@@ -143,8 +145,13 @@
         window.location.href = "/logout"
       })
 
-      profilePicture.click(function () {
+      userContainer.click(function () {
         userMenu.toggleClass('d-none')
+        if (userMenu.hasClass('d-none')) {
+          userMenuDrownArrow.removeClass('rotate-180')
+        }else{
+          userMenuDrownArrow.addClass('rotate-180')
+        }
       })
     })
   </script>
