@@ -13,19 +13,17 @@ router.get("/login", (req, res) => {
 })
 
 router.post("/sessionLogin", async (req,res) => {
-  console.log("req type:", typeof req);
-  console.log("res type:", typeof res);
   const idToken = req.body.idToken;
-  const expiresIn = 60 * 60 * 24 * 30 * 1 * 1000;
+  const expiresIn = 60 * 60 * 24 * 13 * 1000;
 
   try {
-    const sessionCookies = await admin.auth().createSessionCookie(idToken, { expiresIn });
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn: expiresIn });
     const options = {maxAge: expiresIn, httpOnly: true, secure: false};
 
-    res.cookie('session', sessionCookies, options)
-    res.st
+    res.cookie('session', sessionCookie, options)
     res.status(200).send({status: "success"})
-  } catch {
+  } catch (err) {
+    console.error(err)
     res.status(401).send('Unauthorized request!');
   }
 })
