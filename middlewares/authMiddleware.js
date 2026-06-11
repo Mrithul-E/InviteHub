@@ -1,4 +1,5 @@
 const admin = require('../firebase')
+require('dotenv').config();
 
 async function attachUser(req, res, next) {
     const sessionCookie = req.cookies.session
@@ -17,11 +18,14 @@ async function attachUser(req, res, next) {
         res.locals.isLoggedIn = true
         res.locals.adminLoggedIn = false
         res.locals.timestamp = Date.now();
+        res.locals.firebaseClientCred = Buffer.from(process.env.firebaseClientCred, 'base64').toString('utf-8');
+        
         next();
     } catch {
         res.locals.isLoggedIn = false
         res.locals.adminLoggedIn = false
         res.locals.timestamp = Date.now();
+        res.locals.firebaseClientCred = Buffer.from(process.env.firebaseClientCred, 'base64').toString('utf-8');
         next();
     }
 }

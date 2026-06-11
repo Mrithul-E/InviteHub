@@ -23,11 +23,32 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="/images/FullLogo_Transparent_NoBuffer.png" alt="Bootstrap" width="auto" height="60">
       </a>
+      <div id="nav-end-container" class="d-flex">
+        {{#if isLoggedIn}}
+        <div id="userContainer" class="d-flex">
+          <div class="d-flex align-items-center" id="userClickableContainer">
+            <img src="{{userRecord.photoURL}}" alt="user profile picture" width="40" height="40"
+              class="me-2 rounded-circle" id="userPicture">
+            <span class="material-symbols-outlined user-select-none" id="userMenuDrownArrow">
+              keyboard_arrow_down
+            </span>
+          </div>
+          <div id="userMenu" class="d-none">
+            <h5>{{userRecord.displayName}}</h5>
+            <button type="button" class="btn btn-danger" id="logout-btn">Logout</button>
+          </div>
+        </div>
+        {{/if}}
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -47,61 +68,14 @@
           </li>
         </ul>
       </div>
-      <div id="nav-end-container" class="d-flex">
-        {{#if isLoggedIn}}
-        <div id="userContainer" class="d-flex">
-          <div class="d-flex align-items-center" id="userClickableContainer">
-            <img src="{{userRecord.photoURL}}" alt="user profile picture" width="40" height="40"
-              class="me-2 rounded-circle" id="userPicture">
-            <span class="material-symbols-outlined" id="userMenuDrownArrow">
-              keyboard_arrow_down
-            </span>
-          </div>
-          <div id="userMenu" class="d-none">
-            <h5>{{userRecord.displayName}}</h5>
-            <button type="button" class="btn btn-danger" id="logout-btn">Logout</button>
-          </div>
-        </div>
-        {{/if}}
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
+      
     </div>
   </nav>
 
 
   {{{body}}}
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyDyVIsPK1zSZogVBbErB3_2-DKlovEDCjM",
-      authDomain: "invitehub-3d733.firebaseapp.com",
-      projectId: "invitehub-3d733",
-      storageBucket: "invitehub-3d733.firebasestorage.app",
-      messagingSenderId: "897414221009",
-      appId: "1:897414221009:web:751cd7eb3060bf0c5dc9f0",
-      measurementId: "G-7N1W087TM6"
-    };
-
-    // Initialize Firebase
-    window.app = initializeApp(firebaseConfig);
-    window.analytics = getAnalytics(app);
-
-    window.auth = getAuth(app);
-    window.googleProvider = new GoogleAuthProvider();
-    window.firebaseSignIn = signInWithPopup;
-  </script>
+  {{firebaseClientCred}}
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -117,7 +91,7 @@
       const userContainer = $("#userContainer")
       const userDisplayName = "{{userRecord.displayName}}" 
 
-      if (userDisplayName) {
+      if (userDisplayName && img.naturalWidth === 0) {
         const canvas = document.createElement('canvas')
         canvas.width = profilePicture.attr('width')
         canvas.height = profilePicture.attr('height')
