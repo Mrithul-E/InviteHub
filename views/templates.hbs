@@ -1,0 +1,140 @@
+<div class="container-fluid pt-3">
+  <div class="row g-2">
+    {{#if adminLoggedIn}}
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card d-flex justify-content-center align-items-center flex-column" id="createTemplate">
+        <i class="bi bi-plus"></i>
+        <h3 class="">Create template</h3>
+      </div>
+    </div>
+    {{/if}}
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card"></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card"></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card"></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card"></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="templates-card"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true" id="templateFormModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body position-relative">
+        <form>
+          <div class="mb-3">
+            <label for="templateName" class="form-label">Template name</label>
+            <input type="text" class="form-control" id="templateName" aria-describedby="templateHelp" required>
+            <div id="templateHelp" class="form-text">This is the template name shown to all users</div>
+          </div>
+          <div class="mb-3">
+            <label for="templateFileName" class="form-label">File name</label>
+            <input type="text" class="form-control" id="templateFileName" aria-describedby="templateFileNameHelp"
+              required>
+            <div id="templateFileNameHelp" class="form-text">Enter the exact file name of the corresponding hbs file.
+              Should not inlcude './', full path or relative path</div>
+          </div>
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Upload the preview image</label>
+            <input class="form-control" type="file" id="formFile" accept="image/png, image/jpeg, image/webp" required>
+          </div>
+          <label for="templateCategorySelect" class="form-label">Select the category of the template</label>
+          <select class="form-select mb-3" aria-label="Default select example" id="templateCategorySelect" required>
+            <option value="" selected disabled>Select the template category</option>
+            {{#each templateCategories}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          <div class="mb-3">
+            <label for="formFieldsSelect" class="form-label">select the required fields in required order</label>
+            <div class="w-100 formFieldsSelect" id="formFieldsSelect">
+              <div class="w-100 header d-flex">
+                <div class="w-75 d-flex align-items-center">
+                  <select class="form-select" aria-label="select form field" id="formFieldSelect" required>
+                    <option value="" selected disabled>Select the template category</option>
+                    {{#each templateFields}}
+                    <option value="{{this.id}}">{{this.label}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <button type="button" class="w-25 d-flex align-items-center justify-content-center addBtn btn"
+                  id="addFieldBtn">ADD</button>
+              </div>
+              <div class="w-100" id="fieldsListContainer">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    const createTemplateBtn = $("#createTemplate")
+    const addFieldBtn = $("#addFieldBtn")
+    const formFieldSelect = $("#formFieldSelect")
+    const fieldsListContainer = $("#fieldsListContainer")
+
+    const formModalElement = document.getElementById('templateFormModal');
+    const formModal = new bootstrap.Modal(formModalElement);
+
+    const fieldsList = []
+
+    function renderFieldsList() {
+      // simply written strong validation ^_^ :D
+      if (Array.isArray(fieldsList) && fieldsList.length !== 0) {
+        const htmlString = `
+        <ol>
+        ${fieldsList.map(
+          fieldsName => `<li data-id="${fieldsName.id}">${fieldsName.label}</li>
+          `).join("")}
+        </ol>
+        `
+
+        fieldsListContainer.html(htmlString)
+      }
+    }
+
+    function addField(id, label) {
+      fieldsList.push({ "id": id, "label": label })
+    }
+
+    createTemplateBtn.click(function () {
+      formModal.show();
+    })
+
+    addFieldBtn.click(function () {
+      // id is the value from the select element
+      const id = formFieldSelect.val();
+      if (id) {
+        const label = formFieldSelect.find("option:selected").text();
+
+        addField(id, label)
+        renderFieldsList()
+      }
+    })
+  })
+</script>

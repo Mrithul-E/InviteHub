@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require("../firebase") 
+const {saveUserLogin} = require("../service/userService")
 
 
 /* GET home page. */
@@ -19,6 +20,11 @@ router.post("/sessionLogin", async (req,res) => {
   try {
     const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn: expiresIn });
     const options = {maxAge: expiresIn, httpOnly: true, secure: false};
+
+    const decodedClaims = await admin.auth().verifySessionCookie(sessionCookie, true);
+    const userRecord = await admin.auth().getUser(decodedClaims.uid);
+    
+    await saveUserLogin(userRecord)
 
     res.cookie('session', sessionCookie, options)
     res.status(200).send({status: "success"})

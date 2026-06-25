@@ -9,6 +9,9 @@
 
 body {
   padding-top: 86px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 html {
@@ -160,7 +163,7 @@ nav .container-fluid {
 }
 
 .hero-graphics img {
-  width: 100%;
+  width: 90%;
   animation: backandforth 4s linear infinite;
 }
 
@@ -263,10 +266,71 @@ nav .container-fluid {
     transform: rotate(180deg);
 }
 
+.footer-brand {
+    height: 36px;
+    width: 36px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+#footer {
+  background-color: var(--light-bg);
+}
+
 #userClickableContainer {
   cursor: pointer;
 }
 
+.templates-card {
+  aspect-ratio: 1;
+  border-color: var(--accent-purple);
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.templates-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+#createTemplate {
+  position: relative;
+  color: var(--accent-purple-dark);
+}
+
+#createTemplate i {
+  font-size: 80px;
+}
+
+#createTemplate h3 {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  font-size: larger   ;
+}
+
+.formFieldsSelect {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
+ 
+.formFieldsSelect .header {
+  height: 38px;
+  /* padding-left: .75rem; */
+}
+
+.formFieldsSelect .header .addBtn {
+  border-left: var(--bs-border-width) solid var(--bs-border-color);
+  background-color: #0000000c;
+}
+
+.formFieldsSelect .header .addBtn:hover {
+  background-color: #00000017;
+}
 
 @keyframes backandforth {
   0% {

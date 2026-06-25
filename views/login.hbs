@@ -45,12 +45,14 @@
                     contentType: 'application/json',
                     data: JSON.stringify({ idToken: idToken }),
                     success: function () {
-                        {{!-- window.location.assign('/dashboard'); --}}
+                        alert("Login successful")
+                        window.location.replace('/');
                         console.log('logged in..')
                     },
                     error: function (err) {
                         console.error(err);
                         alert('Authentication failed.');
+                        window.location.href = "/login"
                     }
                 });
             })
