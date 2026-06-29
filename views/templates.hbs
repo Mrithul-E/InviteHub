@@ -66,7 +66,7 @@
             <div class="w-100 formFieldsSelect" id="formFieldsSelect">
               <div class="w-100 header d-flex">
                 <div class="w-75 d-flex align-items-center">
-                  <select class="form-select" aria-label="select form field" id="formFieldSelect" required>
+                  <select class="form-select" aria-label="select form field" id="formFieldSelect">
                     <option value="" selected disabled>Select the template category</option>
                     {{#each templateFields}}
                     <option value="{{this.id}}">{{this.label}}</option>
@@ -76,7 +76,10 @@
                 <button type="button" class="w-25 d-flex align-items-center justify-content-center addBtn btn"
                   id="addFieldBtn">ADD</button>
               </div>
-              <div class="w-100" id="fieldsListContainer">
+              <div class="w-100 position-relative">
+                <div class="w-100" id="fieldsListContainer">
+                </div>
+                <textarea class="w-100" id="fieldsData" name="fieldsData" required></textarea>
               </div>
             </div>
           </div>
@@ -97,6 +100,8 @@
     const addFieldBtn = $("#addFieldBtn")
     const formFieldSelect = $("#formFieldSelect")
     const fieldsListContainer = $("#fieldsListContainer")
+    const fieldsData = $("#fieldsData")
+    let fieldsLi = ''
 
     const formModalElement = document.getElementById('templateFormModal');
     const formModal = new bootstrap.Modal(formModalElement);
@@ -104,22 +109,64 @@
     const fieldsList = []
 
     function renderFieldsList() {
-      // simply written strong validation ^_^ :D
-      if (Array.isArray(fieldsList) && fieldsList.length !== 0) {
+      if (fieldsList.length !== 0) {
         const htmlString = `
-        <ol>
+        <ol class="ps-0 mb-0 mt-2" id="fieldsLi">
         ${fieldsList.map(
-          fieldsName => `<li data-id="${fieldsName.id}">${fieldsName.label}</li>
+          (fieldsName, index) => `<li class="listItem d-flex justify-content-between align-items-center mt-1" data-id="${fieldsName.id}">
+            <span class="bi bi-grip-vertical d-flex align-items-center">
+              <span class="ms-3">
+                ${fieldsName.label}
+              </span>
+            </span> 
+            <button type="button" class="btn-close delete-btn me-1" aria-label="Close"></button>
+          </li>
           `).join("")}
         </ol>
         `
 
         fieldsListContainer.html(htmlString)
+
+        fieldsLi = $("#fieldsLi")
+        fieldsLi.sortable({
+          animation: 400,
+          scroll: true,
+          easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+          ghostClass: 'blue-background-class',
+          onEnd: function (event) {
+            const movedElement = fieldsList.splice(event.oldIndex, 1)[0]
+            fieldsList.splice(event.newIndex, 0, movedElement)
+
+            syncFieldsData();
+          },
+          filter: '.delete-btn',
+          onFilter: function (event) {
+            const item = event.item
+            const index = [...item.parentNode.children].indexOf(item)
+
+            fieldsList.splice(index, 1)
+
+            renderFieldsList()
+            syncFieldsData()
+          }
+        });
+      } else {
+        fieldsListContainer.empty()
+      }
+    }
+
+    function syncFieldsData() {
+      // more readable that ternary operator ^_^
+      if (fieldsList.length !== 0) {
+        fieldsData.val(JSON.stringify(fieldsList.map(field => field.id)))
+      } else {
+        fieldsData.val("")
       }
     }
 
     function addField(id, label) {
-      fieldsList.push({ "id": id, "label": label })
+      fieldsList.push({ "id": id, "label": label})
+      syncFieldsData();
     }
 
     createTemplateBtn.click(function () {
