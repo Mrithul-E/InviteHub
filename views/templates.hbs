@@ -8,22 +8,14 @@
       </div>
     </div>
     {{/if}}
+    {{#each templatesData}}
     <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card"></div>
+      <div class="templates-card d-flex justify-content-center align-items-end" style='background-image: url("{{this.thumbnail.url}}");' data-id="{{this.id}}">
+        <p class="w-100 bg-white mb-0 text-center">{{this.templateName}}</p>
+      </div>
     </div>
-    <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card"></div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card"></div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card"></div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card"></div>
-    </div>
-
+    {{/each}}
+  
   </div>
 </div>
 
@@ -37,25 +29,28 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body position-relative">
-        <form>
+        <form id="templateForm">
           <div class="mb-3">
             <label for="templateName" class="form-label">Template name</label>
-            <input type="text" class="form-control" id="templateName" aria-describedby="templateHelp" required>
+            <input type="text" class="form-control" id="templateName" name="templateName"
+              aria-describedby="templateHelp" required>
             <div id="templateHelp" class="form-text">This is the template name shown to all users</div>
           </div>
           <div class="mb-3">
             <label for="templateFileName" class="form-label">File name</label>
-            <input type="text" class="form-control" id="templateFileName" aria-describedby="templateFileNameHelp"
-              required>
+            <input type="text" class="form-control" id="templateFileName" name="templateFileName"
+              aria-describedby="templateFileNameHelp" required>
             <div id="templateFileNameHelp" class="form-text">Enter the exact file name of the corresponding hbs file.
               Should not inlcude './', full path or relative path</div>
           </div>
           <div class="mb-3">
             <label for="formFile" class="form-label">Upload the preview image</label>
-            <input class="form-control" type="file" id="formFile" accept="image/png, image/jpeg, image/webp" required>
+            <input class="form-control" type="file" id="formFile" name="formFile"
+              accept="image/png, image/jpeg, image/webp" required>
           </div>
           <label for="templateCategorySelect" class="form-label">Select the category of the template</label>
-          <select class="form-select mb-3" aria-label="Default select example" id="templateCategorySelect" required>
+          <select class="form-select mb-3" aria-label="Default select example" id="templateCategorySelect"
+            name="templateCategorySelect" required>
             <option value="" selected disabled>Select the template category</option>
             {{#each templateCategories}}
             <option value="{{this.id}}">{{this.name}}</option>
@@ -66,7 +61,8 @@
             <div class="w-100 formFieldsSelect" id="formFieldsSelect">
               <div class="w-100 header d-flex">
                 <div class="w-75 d-flex align-items-center">
-                  <select class="form-select" aria-label="select form field" id="formFieldSelect">
+                  <select class="form-select" aria-label="select form field" id="formFieldSelect"
+                    name="formFieldSelect">
                     <option value="" selected disabled>Select the template category</option>
                     {{#each templateFields}}
                     <option value="{{this.id}}">{{this.label}}</option>
@@ -94,6 +90,8 @@
   </div>
 </div>
 
+
+
 <script>
   $(document).ready(function () {
     const createTemplateBtn = $("#createTemplate")
@@ -101,34 +99,53 @@
     const formFieldSelect = $("#formFieldSelect")
     const fieldsListContainer = $("#fieldsListContainer")
     const fieldsData = $("#fieldsData")
-    let fieldsLi = ''
+    const templateForm = $("#templateForm");
+    const templatesCard = $(".templates-card")
+    let fieldsOl = ''
 
     const formModalElement = document.getElementById('templateFormModal');
     const formModal = new bootstrap.Modal(formModalElement);
 
     const fieldsList = []
 
+    let nextInstanceId = 0
+
     function renderFieldsList() {
       if (fieldsList.length !== 0) {
         const htmlString = `
-        <ol class="ps-0 mb-0 mt-2" id="fieldsLi">
-        ${fieldsList.map(
-          (fieldsName, index) => `<li class="listItem d-flex justify-content-between align-items-center mt-1" data-id="${fieldsName.id}">
-            <span class="bi bi-grip-vertical d-flex align-items-center">
-              <span class="ms-3">
-                ${fieldsName.label}
-              </span>
-            </span> 
-            <button type="button" class="btn-close delete-btn me-1" aria-label="Close"></button>
-          </li>
-          `).join("")}
-        </ol>
+        <div class="accordion" id="fieldsAccordion">
+          <ol class="ps-0 mb-0 mt-2" id="fieldsOl">
+          ${fieldsList.map(
+          (fieldsName, index) => `<li class="listItem d-flex justify-content-between align-items-center mt-1" data-id="${fieldsName.id}" data-instanceid="${fieldsName.instanceId}">
+              <div class="accordion-item w-100">
+                <h2 class="accordion-header d-flex align-items-center" id="headingOne${index}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${index}" aria-expanded="false" aria-controls="collapseOne${index}">
+                    <div class="d-flex justify-content-between">
+                      <span class="bi bi-grip-vertical d-flex align-items-center">
+                        <span class="ms-3">
+                          ${fieldsName.label}
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                  <button type="button" class="btn-close delete-btn me-1" style="transform: scale(0.55);" aria-label="Close"></button>
+                </h2>
+                <div id="collapseOne${index}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <textarea class="form-control fieldDesciptionTextAreas" id="exampleMessage" rows="2" placeholder="Write short description of the field" data-id="${fieldsName.id}" data-instanceid="${fieldsName.instanceId}">${fieldsName.description || ""}</textarea>
+                  </div>
+                </div>
+              </div>
+            </li>
+            `).join("")}
+          </ol>
+        </div>
         `
 
         fieldsListContainer.html(htmlString)
 
-        fieldsLi = $("#fieldsLi")
-        fieldsLi.sortable({
+        fieldsOl = $("#fieldsOl")
+        fieldsOl.sortable({
           animation: 400,
           scroll: true,
           easing: "cubic-bezier(0.25, 1, 0.5, 1)",
@@ -158,14 +175,14 @@
     function syncFieldsData() {
       // more readable that ternary operator ^_^
       if (fieldsList.length !== 0) {
-        fieldsData.val(JSON.stringify(fieldsList.map(field => field.id)))
+        fieldsData.val(JSON.stringify(fieldsList))
       } else {
         fieldsData.val("")
       }
     }
 
     function addField(id, label) {
-      fieldsList.push({ "id": id, "label": label})
+      fieldsList.push({ "id": id, "label": label, "instanceId": nextInstanceId++ })
       syncFieldsData();
     }
 
@@ -182,6 +199,51 @@
         addField(id, label)
         renderFieldsList()
       }
+    })
+
+    fieldsListContainer.on('change', ".fieldDesciptionTextAreas", function () {
+      const $this = $(this)
+
+      const text = $this.val()
+      const id = $this.data('instanceid')
+
+      const field = fieldsList.find(obj => obj.instanceId === id)
+
+      field.description = text
+    })
+
+    templateForm.on("submit", function (e) {
+      e.preventDefault();
+
+      if (!this.checkValidity()) {
+        this.reportValidity();
+        return
+      }
+
+      const formData = new FormData(this);
+
+      $.ajax({
+        url: "/admin/templates/create",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          console.log(response);
+          formModal.hide();
+          window.location.reload()
+        },
+        error: function (err) {
+          console.error(err);
+        }
+      })
+    })
+
+    templatesCard.on('click', function () {
+      const clickedId = $(this).data('id')
+      if (!clickedId) return
+
+      window.open(`/templates/${clickedId}`, '_blank')
     })
   })
 </script>

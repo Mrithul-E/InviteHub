@@ -6,8 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var templatesRouter = require('./routes/templates')
+var adminRouter = require('./routes/admin')
 
-const { requireAuth, attachUser } = require("./middlewares/authMiddleware")
+const { requireAuth, attachUser, requireAdmin } = require("./middlewares/authMiddleware")
 
 var app = express();
 
@@ -21,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// comments are not written  by AI :D
+// comments are not written  by AI :D, Dpn't get missunderstand 
 
 // attach user 
 app.use(attachUser)
@@ -29,6 +30,8 @@ app.use(attachUser)
 
 app.use('/', indexRouter);
 app.use('/templates', templatesRouter)
+
+app.use('/admin', requireAdmin, adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

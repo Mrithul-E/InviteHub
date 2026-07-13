@@ -42,6 +42,18 @@ async function requireAuth(req, res, next) {
     next();
 }
 
+async function requireAdmin(req, res, next) {
+    if (!res.locals.isLoggedIn) {
+        return res.redirect('/login')
+    }
+    
+    if (!res.locals.adminLoggedIn) {
+        return res.status(403).send("Access denied !")
+    }
+    
+    next();
+}
+
 module.exports = {
-    requireAuth, attachUser
+    requireAuth, attachUser, requireAdmin
 }

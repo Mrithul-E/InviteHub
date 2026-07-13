@@ -283,6 +283,7 @@ nav .container-fluid {
 }
 
 .templates-card {
+  overflow: hidden;
   aspect-ratio: 1;
   border-color: var(--accent-purple);
   border-radius: 10px;
@@ -290,6 +291,15 @@ nav .container-fluid {
   border-style: solid;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background-size: cover; 
+  background-position: center;
+}
+
+.templates-card p {
+  font-family: 'Poppins', sans-serif;
+  color: var(--accent-purple-dark);
+  font-size: larger;
+  font-weight: 500;
 }
 
 .templates-card:hover {
@@ -327,13 +337,13 @@ nav .container-fluid {
   border-left: var(--bs-border-width) solid var(--bs-border-color);
   background-color: #0000000c;
 }
-
+s
 .formFieldsSelect .header .addBtn:hover {
   background-color: #00000017;
 }
 
 .listItem {
-  height: 38px;
+  min-height: 38px;
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
 }
@@ -351,6 +361,17 @@ nav .container-fluid {
   opacity: 0;
   height: 1px;
   pointer-events: none;
+}
+
+#fieldsOl .accordion-button:not(.collapsed) {
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+}
+
+#fieldsOl .accordion-button:focus {
+    box-shadow: none;
+    border-color: inherit;
 }
 
 @keyframes backandforth {
