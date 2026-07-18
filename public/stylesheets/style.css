@@ -323,22 +323,22 @@ nav .container-fluid {
   font-size: larger   ;
 }
 
-.formFieldsSelect {
+.formFieldsInput {
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
 }
  
-.formFieldsSelect .header {
+.formFieldsInput .header {
   height: 38px;
   /* padding-left: .75rem; */
 }
 
-.formFieldsSelect .header .addBtn {
+.formFieldsInput .header .addBtn {
   border-left: var(--bs-border-width) solid var(--bs-border-color);
   background-color: #0000000c;
 }
-s
-.formFieldsSelect .header .addBtn:hover {
+
+.formFieldsInput .header .addBtn:hover {
   background-color: #00000017;
 }
 

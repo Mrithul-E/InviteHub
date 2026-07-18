@@ -57,20 +57,10 @@
             {{/each}}
           </select>
           <div class="mb-3">
-            <label for="formFieldsSelect" class="form-label">select the required fields in required order</label>
-            <div class="w-100 formFieldsSelect" id="formFieldsSelect">
-              <div class="w-100 header d-flex">
-                <div class="w-75 d-flex align-items-center">
-                  <select class="form-select" aria-label="select form field" id="formFieldSelect"
-                    name="formFieldSelect">
-                    <option value="" selected disabled>Select the template category</option>
-                    {{#each templateFields}}
-                    <option value="{{this.id}}">{{this.label}}</option>
-                    {{/each}}
-                  </select>
-                </div>
-                <button type="button" class="w-25 d-flex align-items-center justify-content-center addBtn btn"
-                  id="addFieldBtn">ADD</button>
+            <label for="formFieldInput" class="form-label">select the required fields in required order</label>
+            <div class="w-100 formFieldsInput" id="formFieldsInput">
+              <div class="" id="formeo-editor">
+
               </div>
               <div class="w-100 position-relative">
                 <div class="w-100" id="fieldsListContainer">
@@ -96,7 +86,7 @@
   $(document).ready(function () {
     const createTemplateBtn = $("#createTemplate")
     const addFieldBtn = $("#addFieldBtn")
-    const formFieldSelect = $("#formFieldSelect")
+    const formFieldInput = $("#formFieldInput")
     const fieldsListContainer = $("#fieldsListContainer")
     const fieldsData = $("#fieldsData")
     const templateForm = $("#templateForm");
@@ -110,112 +100,34 @@
 
     let nextInstanceId = 0
 
-    function renderFieldsList() {
-      if (fieldsList.length !== 0) {
-        const htmlString = `
-        <div class="accordion" id="fieldsAccordion">
-          <ol class="ps-0 mb-0 mt-2" id="fieldsOl">
-          ${fieldsList.map(
-          (fieldsName, index) => `<li class="listItem d-flex justify-content-between align-items-center mt-1" data-id="${fieldsName.id}" data-instanceid="${fieldsName.instanceId}">
-              <div class="accordion-item w-100">
-                <h2 class="accordion-header d-flex align-items-center" id="headingOne${index}">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne${index}" aria-expanded="false" aria-controls="collapseOne${index}">
-                    <div class="d-flex justify-content-between">
-                      <span class="bi bi-grip-vertical d-flex align-items-center">
-                        <span class="ms-3">
-                          ${fieldsName.label}
-                        </span>
-                      </span>
-                    </div>
-                  </button>
-                  <button type="button" class="btn-close delete-btn me-1" style="transform: scale(0.55);" aria-label="Close"></button>
-                </h2>
-                <div id="collapseOne${index}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <textarea class="form-control fieldDesciptionTextAreas" id="exampleMessage" rows="2" placeholder="Write short description of the field" data-id="${fieldsName.id}" data-instanceid="${fieldsName.instanceId}">${fieldsName.description || ""}</textarea>
-                  </div>
-                </div>
-              </div>
-            </li>
-            `).join("")}
-          </ol>
-        </div>
-        `
-
-        fieldsListContainer.html(htmlString)
-
-        fieldsOl = $("#fieldsOl")
-        fieldsOl.sortable({
-          animation: 400,
-          scroll: true,
-          easing: "cubic-bezier(0.25, 1, 0.5, 1)",
-          ghostClass: 'blue-background-class',
-          onEnd: function (event) {
-            const movedElement = fieldsList.splice(event.oldIndex, 1)[0]
-            fieldsList.splice(event.newIndex, 0, movedElement)
-
-            syncFieldsData();
-          },
-          filter: '.delete-btn',
-          onFilter: function (event) {
-            const item = event.item
-            const index = [...item.parentNode.children].indexOf(item)
-
-            fieldsList.splice(index, 1)
-
-            renderFieldsList()
-            syncFieldsData()
-          }
-        });
-      } else {
-        fieldsListContainer.empty()
-      }
-    }
-
-    function syncFieldsData() {
-      // more readable that ternary operator ^_^
-      if (fieldsList.length !== 0) {
-        fieldsData.val(JSON.stringify(fieldsList))
-      } else {
-        fieldsData.val("")
-      }
-    }
-
-    function addField(id, label) {
-      fieldsList.push({ "id": id, "label": label, "instanceId": nextInstanceId++ })
-      syncFieldsData();
-    }
-
     createTemplateBtn.click(function () {
       formModal.show();
     })
 
-    addFieldBtn.click(function () {
-      // id is the value from the select element
-      const id = formFieldSelect.val();
-      if (id) {
-        const label = formFieldSelect.find("option:selected").text();
-
-        addField(id, label)
-        renderFieldsList()
+    const editor = new FormeoEditor({
+      editorContainer: '#formeo-editor',
+      events: {
+        onSave: (formData) => {
+          console.log('Form saved:', formData)
+          // Render the form
+          renderer.render(formData.formData)
+        }
       }
     })
 
-    fieldsListContainer.on('change', ".fieldDesciptionTextAreas", function () {
-      const $this = $(this)
-
-      const text = $this.val()
-      const id = $this.data('instanceid')
-
-      const field = fieldsList.find(obj => obj.instanceId === id)
-
-      field.description = text
+    // Set up the renderer
+    const renderer = new FormeoRenderer({
+      editorContainer: '#formeo-editor',
     })
 
     templateForm.on("submit", function (e) {
       e.preventDefault();
 
-      if (!this.checkValidity()) {
+      
+          const submissionData = renderer.formData;
+          console.log(submissionData)
+
+      {{!-- if (!this.checkValidity()) {
         this.reportValidity();
         return
       }
@@ -236,7 +148,7 @@
         error: function (err) {
           console.error(err);
         }
-      })
+      }) --}}
     })
 
     templatesCard.on('click', function () {
@@ -245,5 +157,7 @@
 
       window.open(`/templates/${clickedId}`, '_blank')
     })
+
+
   })
 </script>

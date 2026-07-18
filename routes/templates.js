@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const admin = require("../firebase");
 
-const { getTemplates } = require("../service/templateService")
+const { getTemplates } = require("../service/templateService");
+const { format } = require('morgan');
 
 // this contains all template categories:
 const templateCategories = [
@@ -56,343 +57,33 @@ const templateCategories = [
   }
 ]
 
-const templateFields = [
-  {
-    "id": "eventTitle",
-    "label": "Event Title",
-    "type": "text",
-    "category": "common"
-  },
-  {
-    "id": "eventSubtitle",
-    "label": "Event Subtitle",
-    "type": "text",
-    "category": "common"
-  },
-  {
-    "id": "invitationMessage",
-    "label": "Invitation Message",
-    "type": "textarea",
-    "category": "common"
-  },
-  {
-    "id": "eventDate",
-    "label": "Event Date",
-    "type": "date",
-    "category": "common"
-  },
-  {
-    "id": "eventTime",
-    "label": "Event Time",
-    "type": "time",
-    "category": "common"
-  },
-  {
-    "id": "venueName",
-    "label": "Venue Name",
-    "type": "text",
-    "category": "common"
-  },
-  {
-    "id": "venueAddress",
-    "label": "Venue Address",
-    "type": "textarea",
-    "category": "common"
-  },
-  {
-    "id": "mapLink",
-    "label": "Google Maps Link",
-    "type": "url",
-    "category": "common"
-  },
-  {
-    "id": "contactNumber",
-    "label": "Contact Number",
-    "type": "phone",
-    "category": "common"
-  },
-  {
-    "id": "whatsappNumber",
-    "label": "WhatsApp Number",
-    "type": "phone",
-    "category": "common"
-  },
-  {
-    "id": "email",
-    "label": "Email Address",
-    "type": "email",
-    "category": "common"
-  },
-  {
-    "id": "coverImage",
-    "label": "Cover Image",
-    "type": "image",
-    "category": "media"
-  },
-  {
-    "id": "gallery",
-    "label": "Photo Gallery",
-    "type": "images",
-    "category": "media"
-  },
-  {
-    "id": "backgroundMusic",
-    "label": "Background Music",
-    "type": "url",
-    "category": "media"
-  },
-  {
-    "id": "videoLink",
-    "label": "Video Link",
-    "type": "url",
-    "category": "media"
-  },
-  {
-    "id": "groomName",
-    "label": "Groom Name",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "brideName",
-    "label": "Bride Name",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "groomParents",
-    "label": "Groom Parents",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "brideParents",
-    "label": "Bride Parents",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "coupleStory",
-    "label": "Couple Story",
-    "type": "textarea",
-    "category": "wedding"
-  },
-  {
-    "id": "celebrantName",
-    "label": "Celebrant Name",
-    "type": "text",
-    "category": "birthday"
-  },
-  {
-    "id": "age",
-    "label": "Age",
-    "type": "number",
-    "category": "birthday"
-  },
-  {
-    "id": "babyName",
-    "label": "Baby Name",
-    "type": "text",
-    "category": "baby"
-  },
-  {
-    "id": "parentNames",
-    "label": "Parent Names",
-    "type": "text",
-    "category": "baby"
-  },
-  {
-    "id": "babyPhoto",
-    "label": "Baby Photo",
-    "type": "image",
-    "category": "baby"
-  },
-  {
-    "id": "familyName",
-    "label": "Family Name",
-    "type": "text",
-    "category": "housewarming"
-  },
-  {
-    "id": "housePhoto",
-    "label": "House Photo",
-    "type": "image",
-    "category": "housewarming"
-  },
-  {
-    "id": "husbandName",
-    "label": "Husband Name",
-    "type": "text",
-    "category": "anniversary"
-  },
-  {
-    "id": "wifeName",
-    "label": "Wife Name",
-    "type": "text",
-    "category": "anniversary"
-  },
-  {
-    "id": "anniversaryYear",
-    "label": "Anniversary Year",
-    "type": "number",
-    "category": "anniversary"
-  },
-  {
-    "id": "studentName",
-    "label": "Student Name",
-    "type": "text",
-    "category": "graduation"
-  },
-  {
-    "id": "institution",
-    "label": "Institution",
-    "type": "text",
-    "category": "graduation"
-  },
-  {
-    "id": "degree",
-    "label": "Degree",
-    "type": "text",
-    "category": "graduation"
-  },
-  {
-    "id": "speakerName",
-    "label": "Speaker Name",
-    "type": "text",
-    "category": "conference"
-  },
-  {
-    "id": "description",
-    "label": "Description",
-    "type": "textarea",
-    "category": "conference"
-  },
-  {
-    "id": "bannerImage",
-    "label": "Banner Image",
-    "type": "image",
-    "category": "conference"
-  },
-  {
-    "id": "motherName",
-    "label": "Mother Name",
-    "type": "text",
-    "category": "babyshower"
-  },
-  {
-    "id": "fatherName",
-    "label": "Father Name",
-    "type": "text",
-    "category": "babyshower"
-  },
-  {
-    "id": "rsvpEnabled",
-    "label": "Enable RSVP",
-    "type": "checkbox",
-    "category": "features"
-  },
-  {
-    "id": "rsvpDeadline",
-    "label": "RSVP Deadline",
-    "type": "date",
-    "category": "features"
-  },
-  {
-    "id": "countdownEnabled",
-    "label": "Countdown Timer",
-    "type": "checkbox",
-    "category": "features"
-  },
-  {
-    "id": "themeColor",
-    "label": "Theme Color",
-    "type": "color",
-    "category": "design"
-  },
-  {
-    "id": "secondaryColor",
-    "label": "Secondary Color",
-    "type": "color",
-    "category": "design"
-  },
-  {
-    "id": "fontFamily",
-    "label": "Font Family",
-    "type": "select",
-    "category": "design"
-  },
-  {
-    "id": "hostName",
-    "label": "Hosted By",
-    "type": "text",
-    "category": "common"
-  },
-  {
-    "id": "endDate",
-    "label": "End Date",
-    "type": "date",
-    "category": "common"
-  },
-  {
-    "id": "endTime",
-    "label": "End Time",
-    "type": "time",
-    "category": "common"
-  },
-  {
-    "id": "dressCode",
-    "label": "Dress Code",
-    "type": "text",
-    "category": "common"
-  },
-  {
-    "id": "specialInstructions",
-    "label": "Special Instructions",
-    "type": "textarea",
-    "category": "common"
-  },
-  {
-    "id": "website",
-    "label": "Website",
-    "type": "url",
-    "category": "common"
-  },
-  {
-    "id": "logo",
-    "label": "Logo",
-    "type": "image",
-    "category": "media"
-  },
-  {
-    "id": "weddingHashtag",
-    "label": "Wedding Hashtag",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "receptionVenue",
-    "label": "Reception Venue",
-    "type": "text",
-    "category": "wedding"
-  },
-  {
-    "id": "receptionAddress",
-    "label": "Reception Address",
-    "type": "textarea",
-    "category": "wedding"
-  },
-  {
-    "id": "receptionTime",
-    "label": "Reception Time",
-    "type": "time",
-    "category": "wedding"
-  }
-]
+const formElements = [
+  { element: "input", type: "text" },
+  { element: "input", type: "password" },
+  { element: "input", type: "email" },
+  { element: "input", type: "number" },
+  { element: "input", type: "tel" },
+  { element: "input", type: "url" },
+  { element: "input", type: "search" },
+  { element: "input", type: "date" },
+  { element: "input", type: "time" },
+  { element: "input", type: "datetime-local" },
+  { element: "input", type: "month" },
+  { element: "input", type: "week" },
+  { element: "input", type: "color" },
+  { element: "input", type: "range" },
+  { element: "input", type: "checkbox" },
+  { element: "input", type: "radio" },
+  { element: "input", type: "file" },
+  { element: "input", type: "hidden" },
+  { element: "textarea" },
+  { element: "select" }
+];
 
 router.get('/', async function (req, res) {
   const templatesData = await getTemplates()
   
-  res.render('templates', { templateCategories, templateFields, templatesData})
+  res.render('templates', { templateCategories, formElements, templatesData})
 })
 
 router.get('/:templateId', async function (req, res, next) {
@@ -405,7 +96,16 @@ router.get('/:templateId', async function (req, res, next) {
     return next(err);
   }
 
+  const fields = templatesData[0].fieldsData.map(field => {
+    const fieldDetails = templateFields.find(obj => obj.id === field.id)
 
+    return {
+      ...field,
+      ...fieldDetails
+    }
+  })
+
+  let htmlForm = 
   res.render("templateForm", { "testStr": templateId })
 })
 
