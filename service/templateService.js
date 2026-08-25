@@ -1,6 +1,8 @@
 const admin = require('../firebase')
 const db = admin.firestore()
 
+const { deleteImageCDN } = require("./imageService")
+
 async function createTemplate(templateData) {
     return db.collection("templates").add(templateData)
 }
@@ -28,6 +30,19 @@ async function getTemplates(id) {
 
 }
 
+async function deleteTemplate(templateId) {
+    const docRef = db.collection("templates").doc(templateId)
+    const docSnap = await docRef.get()
+
+    if (docSnap.exists) {
+        const data = docSnap.data()
+        const thumbnailImageId = data.thumbnail.id
+
+        await docRef.delete()
+        await deleteImageCDN(thumbnailImageId)
+    }
+}
+
 module.exports = {
-    createTemplate, getTemplates
+    createTemplate, getTemplates, deleteTemplate
 }

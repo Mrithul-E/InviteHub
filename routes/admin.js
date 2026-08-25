@@ -1,9 +1,10 @@
-require('dotenv').config();
-
 const express = require('express');
 const router = express.Router();
 
 const { createTemplate } = require("../service/templateService")
+const { uploadImageCDN } = require("../service/imageService")
+const { deleteTemplate } = require("../service/templateService")
+
 const multer = require("multer");
 const sharp = require('sharp')
 
@@ -21,44 +22,20 @@ router.post(
           success: false,
           message: "No file uploaded"
         })
+        return;
       }
 
-      const compressedBuffer = await sharp(req.file.buffer)
-        .resize({width: 500, withoutEnlargement: true})
-        .webp({quality: 80})
-        .toBuffer();
+      // req.body.templateName
 
-      const formData = new FormData();
-
-      const blob = new Blob([compressedBuffer], {
-        type: 'image/webp'
-      })
-
-      formData.append(
-        "file",
-        blob,
-        `${req.body.templateName}.webp`
-      )
-
-      const response = await fetch("https://cdn.hackclub.com/api/v4/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.hackClubCDN}`,
-        },
-        body: formData
-      })
-
-      if (!response.ok) {
-        throw new Error(`CDN upload failed - ERROR: (${response.status})`)
-      }
-
-      const thumbnail = await response.json()
+      const thumbnail = await uploadImageCDN(req.file.buffer, req.body.templateName, true)
 
       const templateData = {
         ...req.body,
         fieldsData: JSON.parse(req.body.fieldsData),
         thumbnail
       }
+
+      console.log(templateData)
 
       await createTemplate(templateData)
 
@@ -76,5 +53,26 @@ router.post(
     }
   }
 )
+
+router.delete('/delete/template/:id', async (req, res) => {
+  const templateId = req.params.id
+  console.log(templateId)
+
+  try {
+    await deleteTemplate(templateId);
+    res.json({
+      success: true,
+      message: "Item deleted successfully"
+    });
+  } catch (error) {
+    console.error("Delete template error:", error);
+
+    res.status(400).json({
+      success: false,
+      message: "Item delete failed",
+      error: error.message
+    });
+  }
+})
 
 module.exports = router;

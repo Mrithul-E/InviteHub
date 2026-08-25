@@ -10,8 +10,11 @@
     {{/if}}
     {{#each templatesData}}
     <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card d-flex justify-content-center align-items-end" style='background-image: url("{{this.thumbnail.url}}");' data-id="{{this.id}}">
+      <div class="templates-card position-relative d-flex justify-content-center align-items-end" style='background-image: url("{{this.thumbnail.url}}");' data-id="{{this.id}}">
         <p class="w-100 bg-white mb-0 text-center">{{this.templateName}}</p>
+        {{#if @root.adminLoggedIn}}
+        <i class="delete-btn bi bi-trash position-absolute top-0 end-0 mt-2 me-2 border border-danger text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 30px; height: 30px;"></i>
+        {{/if}}
       </div>
     </div>
     {{/each}}
@@ -59,13 +62,15 @@
           <div class="mb-3">
             <label for="formFieldInput" class="form-label">select the required fields in required order</label>
             <div class="w-100 formFieldsInput" id="formFieldsInput">
-              <div class="" id="formeo-editor">
+              <div class="" id="form-editor">
+
+              </div>
+              <div id="form-renderer">
 
               </div>
               <div class="w-100 position-relative">
                 <div class="w-100" id="fieldsListContainer">
                 </div>
-                <textarea class="w-100" id="fieldsData" name="fieldsData" required></textarea>
               </div>
             </div>
           </div>
@@ -75,6 +80,7 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        
       </div>
     </div>
   </div>
@@ -88,15 +94,16 @@
     const addFieldBtn = $("#addFieldBtn")
     const formFieldInput = $("#formFieldInput")
     const fieldsListContainer = $("#fieldsListContainer")
-    const fieldsData = $("#fieldsData")
     const templateForm = $("#templateForm");
-    const templatesCard = $(".templates-card")
+    const templatesCard = $(".templates-card");
+    const deleteBtn = $(".delete-btn")
+
     let fieldsOl = ''
 
     const formModalElement = document.getElementById('templateFormModal');
     const formModal = new bootstrap.Modal(formModalElement);
 
-    const fieldsList = []
+    let fieldsList = {}
 
     let nextInstanceId = 0
 
@@ -104,35 +111,35 @@
       formModal.show();
     })
 
-    const editor = new FormeoEditor({
-      editorContainer: '#formeo-editor',
-      events: {
-        onSave: (formData) => {
-          console.log('Form saved:', formData)
-          // Render the form
-          renderer.render(formData.formData)
-        }
-      }
-    })
 
-    // Set up the renderer
-    const renderer = new FormeoRenderer({
-      editorContainer: '#formeo-editor',
-    })
+    const editor = $("#form-editor").formBuilder({
+      onSave: function (evt, formData) {
+        $('#form-renderer').formRender({formData});
+      }
+    });
+    
 
     templateForm.on("submit", function (e) {
       e.preventDefault();
 
-      
-          const submissionData = renderer.formData;
-          console.log(submissionData)
-
-      {{!-- if (!this.checkValidity()) {
+      if (!this.checkValidity()) {
         this.reportValidity();
         return
       }
 
-      const formData = new FormData(this);
+      const formData = new FormData();
+      const formFields = editor.actions.getData("json")
+
+      if (formFields === '[]') {
+        alert("No form fields are selected")
+        return 
+      }
+
+      formData.append("templateName", $("#templateName").val());
+      formData.append("templateFileName", $("#templateFileName").val());
+      formData.append("templateCategorySelect", $("#templateCategorySelect").val());
+      formData.append("formFile", $("#formFile")[0].files[0]);
+      formData.append("fieldsData", formFields);
 
       $.ajax({
         url: "/admin/templates/create",
@@ -148,7 +155,7 @@
         error: function (err) {
           console.error(err);
         }
-      }) --}}
+      })
     })
 
     templatesCard.on('click', function () {
@@ -156,6 +163,26 @@
       if (!clickedId) return
 
       window.open(`/templates/${clickedId}`, '_blank')
+    })
+
+    deleteBtn.on('click', function (e) { 
+      e.stopPropagation();
+
+      if (!confirm("Are you sure you want to delete this item?")) return "user denied!";
+
+      const templateId = $(this).closest(".templates-card").data('id');
+
+      $.ajax({
+        url: "/admin/delete/template/"+templateId,
+        method: 'DELETE',
+        success: function (response){
+          console.log('template deleted succuessfully:', response)
+          location.reload()
+        },
+        error: function (response){
+          console.log('template delete failed: ', response)    
+        }
+      })
     })
 
 

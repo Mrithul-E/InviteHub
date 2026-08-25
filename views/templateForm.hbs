@@ -1,1 +1,98 @@
-<h1>{{testStr}}</h1>
+<div class="container">
+    <div class="row justify-content-center pt-3">
+        <div class="col-md-6">
+            <form id="templateForm" enctype="multipart/form-data">
+                <div id="renderArea"></div>
+                
+                <div id="formError" class="alert alert-danger d-none mt-3" role="alert"></div>
+                <div id="formSuccess" class="alert alert-success d-none mt-3" role="alert"></div>
+
+                <button type="submit" class="btn btn-primary mt-3">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var formData = {{{templatesData}}};
+        const formError = $("#formError")
+        const formSuccess = $("formSuccess")
+        const templateId = formData[0].id
+
+        $("#renderArea").formRender({
+            dataType: 'json',
+            formData: formData[0].fieldsData
+        });
+
+        $("#templateForm").on("submit", function (e) {
+            e.preventDefault()
+            const form = this
+
+            formError.addClass("d-none").text("")
+            formSuccess.addClass("d-none").text("")
+
+            const maxFileSize = 50 * 1024 * 1024 // 50 MB in bytes
+            let totalFileSize = 0
+
+            $(form).find('input[type="file"]').each(function () {
+                for (const file of this.files) {
+                    totalFileSize += file.size
+                }
+            })
+
+            console.log("Total file size: ", (totalFileSize/1024/1024), " MB");
+
+            if (totalFileSize > maxFileSize) {
+                formError
+                    .removeClass("d-none")
+                    .html(
+                        "<strong>File upload error:</strong> The total size of all uploaded files must not exceed 50 MB. </br>" +
+                        `Your total file size: ${totalFileSize / 1024 / 1024}).toFixed(2)} MB`
+                    )
+
+                $("html, body").animate({
+                    scrollTop: formError.offset().top - 100
+                }, 300)
+
+                return;
+            }
+
+            const data = new FormData(form)
+            data.append("TemplateID", templateId)
+
+            for (const [key, value] of data.entries()) {
+                console.log(key, ':', value)
+            }
+
+            $.ajax({
+                url: "/templates/invitationData",
+                type: "POST",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log("Submission successful:", response);
+                    formSuccess.removeClass("d-none").text(
+                            response.message || "Form submitted successfully!"
+                        );
+                    // form.reset();
+                },
+                error: function (xhr) {
+                    console.error("Submission failed:", xhr);
+                    let message = xhr.responseJSON?.message || "Form submission failed.";
+
+                    formError.removeClass("d-none").text(message);
+
+                    $("html, body").animate({
+                        scrollTop: formError.offset().top - 100
+                    }, 300);
+                }
+            });
+
+        });
+
+    });
+</script>

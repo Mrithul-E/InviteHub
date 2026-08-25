@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const admin = require("../firebase");
+const multer = require("multer")
 
+const admin = require("../firebase");
 const { getTemplates } = require("../service/templateService");
 const { format } = require('morgan');
+
+
 
 // this contains all template categories:
 const templateCategories = [
@@ -57,33 +60,16 @@ const templateCategories = [
   }
 ]
 
-const formElements = [
-  { element: "input", type: "text" },
-  { element: "input", type: "password" },
-  { element: "input", type: "email" },
-  { element: "input", type: "number" },
-  { element: "input", type: "tel" },
-  { element: "input", type: "url" },
-  { element: "input", type: "search" },
-  { element: "input", type: "date" },
-  { element: "input", type: "time" },
-  { element: "input", type: "datetime-local" },
-  { element: "input", type: "month" },
-  { element: "input", type: "week" },
-  { element: "input", type: "color" },
-  { element: "input", type: "range" },
-  { element: "input", type: "checkbox" },
-  { element: "input", type: "radio" },
-  { element: "input", type: "file" },
-  { element: "input", type: "hidden" },
-  { element: "textarea" },
-  { element: "select" }
-];
-
 router.get('/', async function (req, res) {
   const templatesData = await getTemplates()
   
-  res.render('templates', { templateCategories, formElements, templatesData})
+  res.render('templates', { templateCategories, templatesData})
+})
+
+router.get('/a', function (req, res) {
+  res.render('templates/wedding_single_page', {
+    layout: false
+  })
 })
 
 router.get('/:templateId', async function (req, res, next) {
@@ -96,23 +82,13 @@ router.get('/:templateId', async function (req, res, next) {
     return next(err);
   }
 
-  const fields = templatesData[0].fieldsData.map(field => {
-    const fieldDetails = templateFields.find(obj => obj.id === field.id)
+  console.log(templatesData)
 
-    return {
-      ...field,
-      ...fieldDetails
-    }
-  })
-
-  let htmlForm = 
-  res.render("templateForm", { "testStr": templateId })
+  res.render("templateForm", { "templatesData": JSON.stringify(templatesData) })
 })
 
-router.get('/a', function (req, res) {
-  res.render('templates/wedding_single_page', {
-    layout: false
-  })
-})
+router.post("/invitationData", function (req, res){
+  
+})      
 
 module.exports = router
