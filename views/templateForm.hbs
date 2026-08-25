@@ -19,7 +19,7 @@
     $(document).ready(function () {
         var formData = {{{templatesData}}};
         const formError = $("#formError")
-        const formSuccess = $("formSuccess")
+        const formSuccess = $("#formSuccess")
         const templateId = formData[0].id
 
         $("#renderArea").formRender({
@@ -50,7 +50,7 @@
                     .removeClass("d-none")
                     .html(
                         "<strong>File upload error:</strong> The total size of all uploaded files must not exceed 50 MB. </br>" +
-                        `Your total file size: ${totalFileSize / 1024 / 1024}).toFixed(2)} MB`
+                        `Your total file size: ${(totalFileSize / 1024 / 1024).toFixed(2)} MB`
                     )
 
                 $("html, body").animate({

@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const multer = require("multer")
+const Busboy = require("busboy");
 
 const admin = require("../firebase");
 const { getTemplates } = require("../service/templateService");
 const { format } = require('morgan');
-
-
 
 // this contains all template categories:
 const templateCategories = [
@@ -87,8 +85,42 @@ router.get('/:templateId', async function (req, res, next) {
   res.render("templateForm", { "templatesData": JSON.stringify(templatesData) })
 })
 
-router.post("/invitationData", function (req, res){
+const maxTotalFileSize = 50 * 1024 * 1024 // 50 MB in bytes ^_~
+
+router.post("/invitationData", function (req, res) {
+  let totalFileSize = 0;
+
+  const busboy = Busboy({
+    headers: req.headers,
+    limits: {
+      fileSize: maxTotalFileSize,
+      fields: 100
+    }
+  })
   
+  busboy.on('file', (name, file)=>{
+    file.on('limit', () => {
+      busboy.destroy(new Error('Total file size exceeded for a single file'))
+    })
+
+    file.on('data', (chunk) => {
+      totalFileSize += chunk.length
+
+      if (totalFileSize > maxTotalFileSize) {
+        busboy.destroy(new Error('Total file size exceeded'))
+      }
+    })
+  })
+
+  busboy.on('finish', () => {
+    res.json({message: "Received successfully"})
+  })
+
+  busboy.on('error', (err) => {
+    res.status(413).json({message: err.message})
+  })
+
+  req.pipe(busboy)
 })      
 
 module.exports = router
