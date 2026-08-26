@@ -89,6 +89,8 @@ const maxTotalFileSize = 50 * 1024 * 1024 // 50 MB in bytes ^_~
 
 router.post("/invitationData", function (req, res) {
   let totalFileSize = 0;
+  const fields = {}
+  const files = []
 
   const busboy = Busboy({
     headers: req.headers,
@@ -97,8 +99,15 @@ router.post("/invitationData", function (req, res) {
       fields: 100
     }
   })
+
+  busboy.on('field', (name, value) => {
+    fields[name] = value
+  })
   
-  busboy.on('file', (name, file)=>{
+  busboy.on('file', (name, file, info)=>{
+    const {fileName, mimeType} = info
+    const chunks = []
+
     file.on('limit', () => {
       busboy.destroy(new Error('Total file size exceeded for a single file'))
     })
@@ -109,6 +118,18 @@ router.post("/invitationData", function (req, res) {
       if (totalFileSize > maxTotalFileSize) {
         busboy.destroy(new Error('Total file size exceeded'))
       }
+
+      chunks.push(chunk)
+    })
+
+    file.on('end', () => {
+      files.push({
+        fileName,
+        mimeType,
+        fieldName: name,
+        size: Buffer.concat(chunks).length,
+        buffer: Buffer.concat(chunks)
+      })
     })
   })
 
