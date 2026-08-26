@@ -5,6 +5,9 @@ const Busboy = require("busboy");
 const admin = require("../firebase");
 const { getTemplates } = require("../service/templateService");
 const { format } = require('morgan');
+const fs = require("fs");
+const crypto = require("crypto");
+const path = require("path");
 
 // this contains all template categories:
 const templateCategories = [
@@ -60,8 +63,8 @@ const templateCategories = [
 
 router.get('/', async function (req, res) {
   const templatesData = await getTemplates()
-  
-  res.render('templates', { templateCategories, templatesData})
+
+  res.render('templates', { templateCategories, templatesData })
 })
 
 router.get('/a', function (req, res) {
@@ -85,12 +88,15 @@ router.get('/:templateId', async function (req, res, next) {
   res.render("templateForm", { "templatesData": JSON.stringify(templatesData) })
 })
 
+const tempDir = path.join(__dirname, "../temp");
 const maxTotalFileSize = 50 * 1024 * 1024 // 50 MB in bytes ^_~
 
 router.post("/invitationData", function (req, res) {
   let totalFileSize = 0;
   const fields = {}
   const files = []
+  const tempFilePaths = []
+  const fileWrites = []
 
   const busboy = Busboy({
     headers: req.headers,
@@ -103,10 +109,16 @@ router.post("/invitationData", function (req, res) {
   busboy.on('field', (name, value) => {
     fields[name] = value
   })
-  
-  busboy.on('file', (name, file, info)=>{
-    const {fileName, mimeType} = info
-    const chunks = []
+
+  busboy.on('file', (name, file, info) => {
+    const { filename, mimeType } = info
+    const tempFileName = crypto.randomUUID() + path.extname(filename)
+    const tempPath = path.join(tempDir, tempFileName)
+
+    tempFilePaths.push(tempPath)
+
+    const writableStream = fs.createWriteStream(tempPath)
+    file.pipe(writableStream)
 
     file.on('limit', () => {
       busboy.destroy(new Error('Total file size exceeded for a single file'))
@@ -118,30 +130,63 @@ router.post("/invitationData", function (req, res) {
       if (totalFileSize > maxTotalFileSize) {
         busboy.destroy(new Error('Total file size exceeded'))
       }
-
-      chunks.push(chunk)
     })
 
-    file.on('end', () => {
-      files.push({
-        fileName,
-        mimeType,
-        fieldName: name,
-        size: Buffer.concat(chunks).length,
-        buffer: Buffer.concat(chunks)
+    fileWrites.push(
+      new Promise((resolve, reject) => {
+        writableStream.on("finish", () => {
+          files.push({
+            filename,
+            mimeType,
+            fieldName: name,
+            tempPath
+          })
+
+          resolve()
+        });
+
+        writableStream.on('error', reject)
       })
-    })
+    )
+
   })
 
-  busboy.on('finish', () => {
-    res.json({message: "Received successfully"})
+  busboy.on('finish', async () => {
+    try {
+      await Promise.all(fileWrites)
+
+      for (const file of files) {
+        const fileBuffer = await fs.promises.readFile(
+          file.tempPath
+        );
+
+        // Upload fileBuffer to Hack Club CDN , comment is written by hand
+      }
+
+      for (const tempPath of tempFilePaths) {
+        try { await fs.promises.unlink(tempPath) } catch { }
+      }
+      res.json({ message: "Forms submission successful !" })
+    } catch (error) {
+      console.log(error)
+      for (const tempPath of tempFilePaths) {
+        try { await fs.promises.unlink(tempPath) } catch { }
+      }
+
+      res.status(500).json({
+        message: error.message
+      });
+    }
   })
 
-  busboy.on('error', (err) => {
-    res.status(413).json({message: err.message})
+  busboy.on('error', async (err) => {
+    for (const tempPath of tempFilePaths) {
+      try { await fs.promises.unlink(tempPath) } catch { }
+    }
+    res.status(413).json({ message: err.message })
   })
 
   req.pipe(busboy)
-})      
+})
 
 module.exports = router
