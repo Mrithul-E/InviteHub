@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { createTemplate } = require("../service/templateService")
-const { uploadImageCDN } = require("../service/imageService")
+const { uploadImageCDN } = require("../service/cdnService")
 const { deleteTemplate } = require("../service/templateService")
 
 const multer = require("multer");

@@ -45,8 +45,8 @@ async function uploadImageCDN(fileBuffer, fileName, inThumbnail) {
     return jsonResponse
 }
 
-async function deleteImageCDN(imageId) {
-    const response = await fetch(`https://cdn.hackclub.com/api/v4/upload/${imageId}`, {
+async function deleteFileCDN(fileId) {
+    const response = await fetch(`https://cdn.hackclub.com/api/v4/upload/${fileId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${process.env.hackClubCDN}` }
     });
@@ -55,5 +55,5 @@ async function deleteImageCDN(imageId) {
 }
 
 module.exports = {
-    uploadImageCDN, deleteImageCDN
+    uploadImageCDN, deleteFileCDN
 }

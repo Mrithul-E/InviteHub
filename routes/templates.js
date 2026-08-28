@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Busboy = require("busboy");
+const { formidable } = require("formidable");
 
-const admin = require("../firebase");
 const { getTemplates } = require("../service/templateService");
-const { format } = require('morgan');
-const fs = require("fs");
-const crypto = require("crypto");
-const path = require("path");
 
 // this contains all template categories:
 const templateCategories = [
@@ -88,105 +83,34 @@ router.get('/:templateId', async function (req, res, next) {
   res.render("templateForm", { "templatesData": JSON.stringify(templatesData) })
 })
 
-const tempDir = path.join(__dirname, "../temp");
-const maxTotalFileSize = 50 * 1024 * 1024 // 50 MB in bytes ^_~
+const maxTotalFileSize = 50 * 1024 * 1024; // 1 MB
 
 router.post("/invitationData", function (req, res) {
-  let totalFileSize = 0;
-  const fields = {}
-  const files = []
-  const tempFilePaths = []
-  const fileWrites = []
+  const form = formidable({
+    maxTotalFileSize: maxTotalFileSize,
+    multiples: true
+  });
 
-  const busboy = Busboy({
-    headers: req.headers,
-    limits: {
-      fileSize: maxTotalFileSize,
-      fields: 100
-    }
-  })
-
-  busboy.on('field', (name, value) => {
-    fields[name] = value
-  })
-
-  busboy.on('file', (name, file, info) => {
-    const { filename, mimeType } = info
-    const tempFileName = crypto.randomUUID() + path.extname(filename)
-    const tempPath = path.join(tempDir, tempFileName)
-
-    tempFilePaths.push(tempPath)
-
-    const writableStream = fs.createWriteStream(tempPath)
-    file.pipe(writableStream)
-
-    file.on('limit', () => {
-      busboy.destroy(new Error('Total file size exceeded for a single file'))
-    })
-
-    file.on('data', (chunk) => {
-      totalFileSize += chunk.length
-
-      if (totalFileSize > maxTotalFileSize) {
-        busboy.destroy(new Error('Total file size exceeded'))
-      }
-    })
-
-    fileWrites.push(
-      new Promise((resolve, reject) => {
-        writableStream.on("finish", () => {
-          files.push({
-            filename,
-            mimeType,
-            fieldName: name,
-            tempPath
-          })
-
-          resolve()
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      console.error("Formidable error:", err);
+      if (err.httpCode === 413) {
+        return res.status(413).json({
+          message: `Request size too large. Total size exceeds ${(maxTotalFileSize / 1024 / 1024).toFixed(2)} MB limit.`
         });
-
-        writableStream.on('error', reject)
-      })
-    )
-
-  })
-
-  busboy.on('finish', async () => {
-    try {
-      await Promise.all(fileWrites)
-
-      for (const file of files) {
-        const fileBuffer = await fs.promises.readFile(
-          file.tempPath
-        );
-
-        // Upload fileBuffer to Hack Club CDN , comment is written by hand
       }
 
-      for (const tempPath of tempFilePaths) {
-        try { await fs.promises.unlink(tempPath) } catch { }
-      }
-      res.json({ message: "Forms submission successful !" })
-    } catch (error) {
-      console.log(error)
-      for (const tempPath of tempFilePaths) {
-        try { await fs.promises.unlink(tempPath) } catch { }
-      }
-
-      res.status(500).json({
-        message: error.message
+      return res.status(400).json({
+        message: "Form parsing failed."
       });
     }
-  })
 
-  busboy.on('error', async (err) => {
-    for (const tempPath of tempFilePaths) {
-      try { await fs.promises.unlink(tempPath) } catch { }
-    }
-    res.status(413).json({ message: err.message })
-  })
-
-  req.pipe(busboy)
-})
+    return res.status(200).json({
+      message: "Upload successful",
+      body: fields,
+      files: files
+    });
+  });
+});
 
 module.exports = router

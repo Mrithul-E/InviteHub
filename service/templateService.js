@@ -1,7 +1,7 @@
 const admin = require('../firebase')
 const db = admin.firestore()
 
-const { deleteImageCDN } = require("./imageService")
+const { deleteFileCDN: deleteImageCDN } = require("./cdnService")
 
 async function createTemplate(templateData) {
     return db.collection("templates").add(templateData)
