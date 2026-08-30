@@ -1,5 +1,6 @@
 const admin = require('../firebase')
 const db = admin.firestore()
+db.settings({ignoreUndefinedProperties: true})
 
 const { deleteFileCDN: deleteImageCDN } = require("./cdnService")
 
@@ -43,6 +44,14 @@ async function deleteTemplate(templateId) {
     }
 }
 
+async function writeInvitationData(ownerId, fields, files, templateId) {
+    console.log("template id ", templateId);
+    
+    return db.collection("InvitationData").add({
+        ownerId, fields, files, templateId, createdAt: admin.firestore.FieldValue.serverTimestamp()
+    })
+}
+
 module.exports = {
-    createTemplate, getTemplates, deleteTemplate
+    createTemplate, getTemplates, deleteTemplate, writeInvitationData
 }

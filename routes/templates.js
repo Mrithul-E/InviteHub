@@ -2,9 +2,20 @@ const express = require('express');
 const router = express.Router();
 const { formidable } = require("formidable");
 
-const { getTemplates } = require("../service/templateService");
+const fs = require("fs")
+const path = require('path')
+const os = require("os")
 
-// this contains all template categories:
+const { getTemplates, writeInvitationData } = require("../service/templateService");
+const { uploadFileCDN } = require("../service/cdnService");
+const { requireAuth } = require('../middlewares/authMiddleware')
+
+const tempDir = path.join(os.tmpdir(), "inviteHub")
+
+fs.rmSync(tempDir, { recursive: true, force: true });
+fs.mkdirSync(tempDir, { recursive: true });
+
+// this contains all template categories in template creation form:
 const templateCategories = [
   {
     "id": "wedding",
@@ -85,13 +96,19 @@ router.get('/:templateId', async function (req, res, next) {
 
 const maxTotalFileSize = 50 * 1024 * 1024; // 1 MB
 
-router.post("/invitationData", function (req, res) {
+router.post("/invitationData", requireAuth, function (req, res) {
   const form = formidable({
     maxTotalFileSize: maxTotalFileSize,
-    multiples: true
+    multiples: true,
+    uploadDir: tempDir,
+    allowEmptyFiles: true,
+    minFileSize: 0,
   });
 
-  form.parse(req, (err, fields, files) => {
+  const ownerId = res.locals.userRecord.uid
+  const filesPlainObj = {}
+
+  form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error("Formidable error:", err);
       if (err.httpCode === 413) {
@@ -105,10 +122,49 @@ router.post("/invitationData", function (req, res) {
       });
     }
 
+    for (const fieldName in files) {
+      filesPlainObj[fieldName] = []
+
+      for (const file of files[fieldName]) {
+        if (file.size > maxTotalFileSize) {
+          await fs.promises.unlink(file.filepath);
+
+          return res.status(413).json({
+            message: `Request size too large. Total size exceeds ${(maxTotalFileSize/1024/1024).toFixed(2)} MB limit.`
+          });
+        } else if (file.size === 0) {
+          await fs.promises.unlink(file.filepath)
+          continue
+        }
+
+        const resp = await uploadFileCDN(file.originalFilename, file.filepath, file.mimetype)
+        // not AI genarated, copied from formidable file object lol..
+        filesPlainObj[fieldName].push({
+          size: file.size,
+          filepath: file.filepath,
+          newFilename: file.newFilename,
+          mimetype: file.mimetype,
+          mtime: file.mtime,
+          originalFilename: file.originalFilename,
+          cdn: resp
+        })
+
+        await fs.promises.unlink(file.filepath);
+      }
+    }
+
+    Object.entries(fields).forEach(
+      ([key,val]) => {
+        fields[key] = val[0]
+      }
+    )
+
+    await writeInvitationData(ownerId, fields, filesPlainObj, fields.templateId)
+
     return res.status(200).json({
       message: "Upload successful",
       body: fields,
-      files: files
+      files: filesPlainObj
     });
   });
 });

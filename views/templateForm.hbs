@@ -10,6 +10,7 @@
                 <button type="submit" class="btn btn-primary mt-3">
                     Submit
                 </button>
+                
             </form>
         </div>
     </div>
@@ -60,12 +61,17 @@
                 return;
             }
 
-            const data = new FormData(form)
-            data.append("TemplateID", templateId)
+            formSuccess
+                .removeClass("d-none")
+                .html(`
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                `)
 
-            for (const [key, value] of data.entries()) {
-                console.log(key, ':', value)
-            }
+            const data = new FormData(form)
+            data.append("templateId", templateId)
+
 
             $.ajax({
                 url: "/templates/invitationData",
@@ -75,12 +81,13 @@
                 contentType: false,
                 success: function (response) {
                     console.log("Submission successful:", response);
-                    formSuccess.removeClass("d-none").text(
+                    formSuccess.removeClass("d-none").html('').text(
                             response.message || "Form submitted successfully!"
                         );
                     // form.reset();
                 },
                 error: function (xhr) {
+                    formSuccess.addClass("d-none").text("")
                     console.error("Submission failed:", xhr);
                     let message = xhr.responseJSON?.message || "Form submission failed.";
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>{{fields.pageTitle}}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link
@@ -18,7 +18,7 @@
 
         .hero {
             min-height: 100vh;
-            background: linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)), url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80") center/cover;
+            background: linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)), url("{{files.heroImage.cdn}}") center/cover;
         }
 
         .gold {
@@ -63,18 +63,18 @@
 
                         <hr class="my-4">
 
-                        <h2 class="gold">Daniel bro</h2>
+                        <h2 class="gold">{{fields.groomName}}</h2>
                         <h4 class="my-3">&</h4>
-                        <h2 class="gold">Emma Rose</h2>
+                        <h2 class="gold">{{fields.brideName}}</h2>
 
                         <div class="row mt-5">
                             <div class="col-md-6">
                                 <h5>Parents of Groom</h5>
-                                <p>Mr. & Mrs. Michael James</p>
+                                <p>{{fields.groomParentsName}}</p>
                             </div>
                             <div class="col-md-6">
                                 <h5>Parents of Bride</h5>
-                                <p>Mr. & Mrs. Michael James</p>
+                                <p>{{fields.brideParentsName}}</p>
                             </div>
                         </div>
                     </div>
@@ -89,25 +89,25 @@
                 <div class="col-md-4">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <h4>Data</h4>
-                            <p>7 January 2010</p>
+                            <h4>{{fields.dateLabel}}</h4>
+                            <p>{{fields.weddingDate}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <h4>Time</h4>
-                            <p>3:00 PM</p>
+                            <h4>{{fields.timeLabel}}</h4>
+                            <p>{{fields.weddingTime}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <h4>Venue</h4>
-                            <p>Pappinisseri Co Op Bank Auditorium</p>
-                            <a href="#" class="btn btn-warning">view map</a>
+                            <h4>{{fields.venueLabel}}</h4>
+                            <p>{{fields.venueName}}</p>
+                            <a href="{{fields.mapUrl}}" class="btn btn-warning">{{fields.mapButtonText}}</a>
                         </div>
                     </div>
                 </div>
@@ -119,9 +119,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <p>Our journey started with friendship and grew into a lifetime promise. We are excited to celebrate
-                        this
-                        beautiful moment with all our loved ones.</p>
+                    <p>{{fields.storyDescription}}</p>
                 </div>
             </div>
         </div>
@@ -130,33 +128,23 @@
         <h2 class="gold mb-5">GALLERY</h2>
         <div class="container">
             <div class="row g-4 gallery justify-content-center">
-                <div class="col-md-4">
-                    <img src="https://picsum.photos/600/500?1">
-                </div>
-                <div class="col-md-4">
-                    <img src="https://picsum.photos/600/500?2">
-                </div>
-                <div class="col-md-4">
-                    <img src="https://picsum.photos/600/500?3">
-                </div>
-
+                {{#each files}}
+                    {{#each this}}
+                        <div class="col-md-4">
+                            <img src="{{cdn.url}}">
+                        </div>
+                    {{/each}}
+                {{/each}}
             </div>
         </div>
     </section>
     <section class="py-5 bg-light">
         <div class="container text-center">
-            <h2 class="gold mb-4">GALLERY</h2>
-            <p>Please confirm your attendance before <strong>10 October 2026</strong></p>
-            <a href="#" class="btn btn-warning">RSVP Now</a>
-        </div>
-    </section>
-    <section class="py-5">
-        <div class="container text-center">
             <h2 class="gold mb-5">CONTACT</h2>
             <div class="row">
-                <div class="col-md-4">📞 +91 98239479910</div>
-                <div class="col-md-4">💬 +91 93893909300</div>
-                <div class="col-md-4"><a href="mailto:wedding@example.com" class="text-decoration-none text-reset">✉ wedding@example.com</a></div>
+                <div class="col-md-4">📞 {{fields.phoneNumber}}</div>
+                <div class="col-md-4">💬 {{fields.whatsappNumber}}</div>
+                <div class="col-md-4"><a href="mailto:{{fields.emailAddress}}" class="text-decoration-none text-reset">✉ {{fields.emailAddress}}</a></div>
             </div>
         </div>
     </section>
