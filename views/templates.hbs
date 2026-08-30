@@ -40,13 +40,6 @@
             <div id="templateHelp" class="form-text">This is the template name shown to all users</div>
           </div>
           <div class="mb-3">
-            <label for="templateFileName" class="form-label">File name</label>
-            <input type="text" class="form-control" id="templateFileName" name="templateFileName"
-              aria-describedby="templateFileNameHelp" required>
-            <div id="templateFileNameHelp" class="form-text">Enter the exact file name of the corresponding hbs file.
-              Should not inlcude './', full path or relative path</div>
-          </div>
-          <div class="mb-3">
             <label for="formFile" class="form-label">Upload the preview image</label>
             <input class="form-control" type="file" id="formFile" name="formFile"
               accept="image/png, image/jpeg, image/webp" required>
@@ -59,6 +52,12 @@
             <option value="{{this.id}}">{{this.name}}</option>
             {{/each}}
           </select>
+          <div class="mb-3">
+            <label for="templateHBS" class="form-label">HBS template</label>
+            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="templateHBS" name="templateHBS"
+              aria-describedby="templateHBSHelp" required></textarea>
+            <div id="templateHBSHelp" class="form-text">Enter the HBS template here</div>
+          </div>  
           <div class="mb-3">
             <label for="formFieldInput" class="form-label">select the required fields in required order</label>
             <div class="w-100 formFieldsInput" id="formFieldsInput">
@@ -73,6 +72,12 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="mb-3">
+            <label for="formHBS" class="form-label">Template form</label>
+            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="formHBS" name="formHBS"
+              aria-describedby="formHBSHelp"></textarea>
+            <div id="formHBSHelp" class="form-text">Enter the HTML form here</div>
           </div>
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
@@ -130,15 +135,16 @@
       const formData = new FormData();
       const formFields = editor.actions.getData("json")
 
-      if (formFields === '[]') {
-        alert("No form fields are selected")
+      if (formFields === '[]' && !$("#formHBS").val().trim()) {
+        alert("No form where made.")
         return 
       }
 
       formData.append("templateName", $("#templateName").val());
-      formData.append("templateFileName", $("#templateFileName").val());
       formData.append("templateCategorySelect", $("#templateCategorySelect").val());
       formData.append("formFile", $("#formFile")[0].files[0]);
+      formData.append("templateHBS", $("#templateHBS").val());
+      formData.append("formHBS", $("#formHBS").val().trim() || null);
       formData.append("fieldsData", formFields);
 
       $.ajax({

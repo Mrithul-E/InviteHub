@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const fs = require('fs')
 const sharp = require('sharp')
 
 async function uploadImageCDN(fileBuffer, fileName, inThumbnail) {
@@ -45,6 +46,37 @@ async function uploadImageCDN(fileBuffer, fileName, inThumbnail) {
     return jsonResponse
 }
 
+
+async function uploadFileCDN(fileName, filepath, mimetype) {
+    const formData = new FormData();
+
+    const blob = await fs.openAsBlob(
+        filepath, {type: mimetype}
+    )
+
+    formData.append(
+        "file",
+        blob,
+        fileName
+    )
+
+    const response = await fetch("https://cdn.hackclub.com/api/v4/upload", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${process.env.hackClubCDN}`,
+        },
+        body: formData
+    })
+
+    if (!response.ok) {
+        throw new Error(`CDN upload failed - ERROR: (${response.status})`)
+    }
+
+    const jsonResponse = await response.json()
+
+    return jsonResponse
+}
+
 async function deleteFileCDN(fileId) {
     const response = await fetch(`https://cdn.hackclub.com/api/v4/upload/${fileId}`, {
         method: 'DELETE',
@@ -55,5 +87,5 @@ async function deleteFileCDN(fileId) {
 }
 
 module.exports = {
-    uploadImageCDN, deleteFileCDN
+    uploadImageCDN, deleteFileCDN, uploadFileCDN
 }

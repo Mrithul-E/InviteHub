@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto')
+const fs = require("fs")
 
 const { createTemplate } = require("../service/templateService")
-const { uploadImageCDN } = require("../service/cdnService")
+const { uploadImageCDN, uploadFileCDN } = require("../service/cdnService")
 const { deleteTemplate } = require("../service/templateService")
 
 const multer = require("multer");
-const sharp = require('sharp')
 
 const upload = multer({
-  storage: multer.memoryStorage()
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 MB file
+    fieldSize: 10 * 1024 * 1024  // 10 MB per text field
+  }
 });
 
 router.post(
@@ -17,7 +22,7 @@ router.post(
   upload.single('formFile'),
   async (req, res) => {
     try {
-      if (!req.file) {
+      if (!req.file || !req.body.templateHBS) {
         res.status(400).json({
           success: false,
           message: "No file uploaded"
@@ -25,14 +30,21 @@ router.post(
         return;
       }
 
-      // req.body.templateName
+      // req.body.templateName 
+      const filename = `${crypto.randomUUID()}.hbs`
+      const templateHbsFilePath = path.join(os.tmpdir(), "inviteHub", filename)
+      await fs.writeFile(templateHbsFilePath, req.body.templateHBS, "utf8");
 
+      const templateHBS = await uploadFileCDN(filename, templateHbsFilePath, "text/plain")
       const thumbnail = await uploadImageCDN(req.file.buffer, req.body.templateName, true)
 
+      fs.unlinkSync(templateHbsFilePath)
+      
       const templateData = {
         ...req.body,
         fieldsData: JSON.parse(req.body.fieldsData),
-        thumbnail
+        thumbnail,
+        templateHBS
       }
 
       console.log(templateData)
