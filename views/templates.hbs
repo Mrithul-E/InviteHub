@@ -1,4 +1,10 @@
 <div class="container-fluid pt-3">
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="col-12 col-md-4 mb-3">
+      <input type="search" name="" id="templateSearch" placeholder="Search templates" autocomplete="off" class="w-100">
+    </div>
+  </div>
+
   <div class="row g-2">
     {{#if adminLoggedIn}}
     <div class="col-6 col-md-4 col-lg-2">
@@ -8,16 +14,125 @@
       </div>
     </div>
     {{/if}}
-    {{#each templatesData}}
     <div class="col-6 col-md-4 col-lg-2">
-      <div class="templates-card position-relative d-flex justify-content-center align-items-end" style='background-image: url("{{this.thumbnail.url}}");' data-id="{{this.id}}">
-        <p class="w-100 bg-white mb-0 text-center">{{this.templateName}}</p>
-        {{#if @root.adminLoggedIn}}
-        <i class="delete-btn bi bi-trash position-absolute top-0 end-0 mt-2 me-2 border border-danger text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 30px; height: 30px;"></i>
-        {{/if}}
-      </div>
-    </div>
-    {{/each}}
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500");'
+    data-id="dummy-1"
+    data-template-name="Elegant Wedding"
+    data-template-category="wedding"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Elegant Wedding</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?w=500");'
+    data-id="dummy-2"
+    data-template-name="Royal Wedding"
+    data-template-category="wedding"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Royal Wedding</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=500");'
+    data-id="dummy-3"
+    data-template-name="Birthday Party"
+    data-template-category="birthday"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Birthday Party</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500");'
+    data-id="dummy-4"
+    data-template-name="Music Festival"
+    data-template-category="festival"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Music Festival</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1507504031003-b417219a0fde?w=500");'
+    data-id="dummy-5"
+    data-template-name="Beach Wedding"
+    data-template-category="wedding"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Beach Wedding</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500");'
+    data-id="dummy-6"
+    data-template-name="Engagement Ceremony"
+    data-template-category="engagement"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Engagement Ceremony</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500");'
+    data-id="dummy-7"
+    data-template-name="Birthday Celebration"
+    data-template-category="birthday"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Birthday Celebration</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=500");'
+    data-id="dummy-8"
+    data-template-name="Dinner Invitation"
+    data-template-category="dinner"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Dinner Invitation</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1507504031003-b417219a0fde?w=500");'
+    data-id="dummy-9"
+    data-template-name="Classic Wedding"
+    data-template-category="wedding"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Classic Wedding</p>
+  </div>
+</div>
+
+<div class="col-6 col-md-4 col-lg-2">
+  <div
+    class="templates-card position-relative d-flex justify-content-center align-items-end"
+    style='background-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500");'
+    data-id="dummy-10"
+    data-template-name="Modern Wedding"
+    data-template-category="wedding"
+  >
+    <p class="w-100 bg-white mb-0 text-center">Modern Wedding</p>
+  </div>
+</div>
   
   </div>
 </div>
@@ -102,7 +217,9 @@
     const templateForm = $("#templateForm");
     const templatesCard = $(".templates-card");
     const deleteBtn = $(".delete-btn")
-
+    const templateSearch = $("#templateSearch")
+    
+    const templateCards = []
     let fieldsOl = ''
 
     const formModalElement = document.getElementById('templateFormModal');
@@ -191,6 +308,39 @@
       })
     })
 
+    $(".templates-card[data-template-name]").each(function () {
+      templateCards.push({
+        element: this,
+        name: $(this).data('template-name'),
+        category: $(this).data('template-category')
+      })
+    })
 
+    const fuse = new Fuse(templateCards, {
+      keys: ["name", "category"],
+      threshold: 0.4,
+      ignoreLocation: true
+    })
+
+    templateSearch.on('input', function (){
+      const searchTerm = $(this).val().trim()
+
+      if (!searchTerm) {
+        templateCards.forEach(template => {
+          $(template.element).closest(".col-6").show()
+        })
+        return
+      }
+
+      const result = fuse.search(searchTerm)
+
+      templateCards.forEach(template => {
+        $(template.element).closest(".col-6").hide()
+      })
+
+      result.forEach(result => {
+        $(result.item.element).closest(".col-6").show()
+      })
+    })
   })
 </script>

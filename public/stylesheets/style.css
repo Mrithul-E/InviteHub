@@ -264,15 +264,15 @@ nav .container-fluid {
 }
 
 .rotate-180 {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .footer-brand {
-    height: 36px;
-    width: 36px;
-    border-radius: 10px;
-    object-fit: cover;
-    margin-bottom: 0.5rem;
+  height: 36px;
+  width: 36px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
 }
 
 #footer {
@@ -292,7 +292,7 @@ nav .container-fluid {
   border-style: solid;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
 }
 
@@ -305,7 +305,7 @@ nav .container-fluid {
 
 .templates-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
 }
 
 #createTemplate {
@@ -321,14 +321,14 @@ nav .container-fluid {
   position: absolute;
   bottom: 10px;
   text-align: center;
-  font-size: larger   ;
+  font-size: larger;
 }
 
 .formFieldsInput {
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
 }
- 
+
 .formFieldsInput .header {
   height: 38px;
   /* padding-left: .75rem; */
@@ -354,7 +354,7 @@ nav .container-fluid {
 }
 
 .blue-background-class {
-    background-color: #C8EBFB;
+  background-color: #C8EBFB;
 }
 
 #fieldsData {
@@ -365,14 +365,14 @@ nav .container-fluid {
 }
 
 #fieldsOl .accordion-button:not(.collapsed) {
-    background-color: transparent;
-    color: inherit;
-    box-shadow: none;
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
 }
 
 #fieldsOl .accordion-button:focus {
-    box-shadow: none;
-    border-color: inherit;
+  box-shadow: none;
+  border-color: inherit;
 }
 
 @keyframes backandforth {
@@ -382,21 +382,25 @@ nav .container-fluid {
 
   25% {
     transform: rotate(2deg);
-    /* Moves right */
   }
 
   50% {
     transform: rotate(0deg);
-    /* Passes smoothly through center */
   }
 
   75% {
     transform: rotate(-2deg);
-    /* Moves left */
   }
 
   100% {
     transform: rotate(0deg);
-    /* Blends perfectly back into 0% */
   }
+}
+
+#templateSearch {
+  border-radius: 110px;
+  border-style: solid;
+  padding: 8px;
+  outline-offset: unset;
+  outline-color: var(--accent-purple-dark);
 }
