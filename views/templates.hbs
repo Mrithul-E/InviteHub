@@ -14,126 +14,16 @@
       </div>
     </div>
     {{/if}}
+    {{#each templatesData}}
     <div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500");'
-    data-id="dummy-1"
-    data-template-name="Elegant Wedding"
-    data-template-category="wedding"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Elegant Wedding</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?w=500");'
-    data-id="dummy-2"
-    data-template-name="Royal Wedding"
-    data-template-category="wedding"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Royal Wedding</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=500");'
-    data-id="dummy-3"
-    data-template-name="Birthday Party"
-    data-template-category="birthday"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Birthday Party</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500");'
-    data-id="dummy-4"
-    data-template-name="Music Festival"
-    data-template-category="festival"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Music Festival</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1507504031003-b417219a0fde?w=500");'
-    data-id="dummy-5"
-    data-template-name="Beach Wedding"
-    data-template-category="wedding"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Beach Wedding</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500");'
-    data-id="dummy-6"
-    data-template-name="Engagement Ceremony"
-    data-template-category="engagement"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Engagement Ceremony</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500");'
-    data-id="dummy-7"
-    data-template-name="Birthday Celebration"
-    data-template-category="birthday"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Birthday Celebration</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=500");'
-    data-id="dummy-8"
-    data-template-name="Dinner Invitation"
-    data-template-category="dinner"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Dinner Invitation</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1507504031003-b417219a0fde?w=500");'
-    data-id="dummy-9"
-    data-template-name="Classic Wedding"
-    data-template-category="wedding"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Classic Wedding</p>
-  </div>
-</div>
-
-<div class="col-6 col-md-4 col-lg-2">
-  <div
-    class="templates-card position-relative d-flex justify-content-center align-items-end"
-    style='background-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500");'
-    data-id="dummy-10"
-    data-template-name="Modern Wedding"
-    data-template-category="wedding"
-  >
-    <p class="w-100 bg-white mb-0 text-center">Modern Wedding</p>
-  </div>
-</div>
-  
+      <div class="templates-card position-relative d-flex justify-content-center align-items-end" style='background-image: url("{{this.thumbnail.url}}");' data-id="{{this.id}}" data-template-name="{{this.templateName}}" data-template-category="{{this.templateCategorySelect}}">
+        <p class="w-100 bg-white mb-0 text-center">{{this.templateName}}</p> 
+        {{#if @root.adminLoggedIn}} 
+          <i class="delete-btn bi bi-trash position-absolute top-0 end-0 mt-2 me-2 border border-danger text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 30px; height: 30px;"></i> 
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
   </div>
 </div>
 
@@ -169,10 +59,10 @@
           </select>
           <div class="mb-3">
             <label for="templateHBS" class="form-label">HBS template</label>
-            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="templateHBS" name="templateHBS"
-              aria-describedby="templateHBSHelp" required></textarea>
+            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="templateHBS"
+              name="templateHBS" aria-describedby="templateHBSHelp" required></textarea>
             <div id="templateHBSHelp" class="form-text">Enter the HBS template here</div>
-          </div>  
+          </div>
           <div class="mb-3">
             <label for="formFieldInput" class="form-label">select the required fields in required order</label>
             <div class="w-100 formFieldsInput" id="formFieldsInput">
@@ -190,8 +80,8 @@
           </div>
           <div class="mb-3">
             <label for="formHBS" class="form-label">Template form</label>
-            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="formHBS" name="formHBS"
-              aria-describedby="formHBSHelp"></textarea>
+            <textarea class="form-control text-nowrap font-monospace" rows="8" spellcheck="false" id="formHBS"
+              name="formHBS" aria-describedby="formHBSHelp"></textarea>
             <div id="formHBSHelp" class="form-text">Enter the HTML form here</div>
           </div>
           <div class="mb-3 form-check">
@@ -200,7 +90,7 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        
+
       </div>
     </div>
   </div>
@@ -218,7 +108,7 @@
     const templatesCard = $(".templates-card");
     const deleteBtn = $(".delete-btn")
     const templateSearch = $("#templateSearch")
-    
+
     const templateCards = []
     let fieldsOl = ''
 
@@ -236,10 +126,10 @@
 
     const editor = $("#form-editor").formBuilder({
       onSave: function (evt, formData) {
-        $('#form-renderer').formRender({formData});
+        $('#form-renderer').formRender({ formData });
       }
     });
-    
+
 
     templateForm.on("submit", function (e) {
       e.preventDefault();
@@ -254,7 +144,7 @@
 
       if (formFields === '[]' && !$("#formHBS").val().trim()) {
         alert("No form where made.")
-        return 
+        return
       }
 
       formData.append("templateName", $("#templateName").val());
@@ -288,7 +178,7 @@
       window.open(`/templates/${clickedId}`, '_blank')
     })
 
-    deleteBtn.on('click', function (e) { 
+    deleteBtn.on('click', function (e) {
       e.stopPropagation();
 
       if (!confirm("Are you sure you want to delete this item?")) return "user denied!";
@@ -296,14 +186,14 @@
       const templateId = $(this).closest(".templates-card").data('id');
 
       $.ajax({
-        url: "/admin/delete/template/"+templateId,
+        url: "/admin/delete/template/" + templateId,
         method: 'DELETE',
-        success: function (response){
+        success: function (response) {
           console.log('template deleted succuessfully:', response)
           location.reload()
         },
-        error: function (response){
-          console.log('template delete failed: ', response)    
+        error: function (response) {
+          console.log('template delete failed: ', response)
         }
       })
     })
@@ -322,7 +212,7 @@
       ignoreLocation: true
     })
 
-    templateSearch.on('input', function (){
+    templateSearch.on('input', function () {
       const searchTerm = $(this).val().trim()
 
       if (!searchTerm) {
