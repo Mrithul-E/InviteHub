@@ -163,8 +163,9 @@ nav .container-fluid {
 }
 
 .hero-graphics img {
-  width: 90%;
+  width: 79%;
   animation: backandforth 4s linear infinite;
+  padding-bottom: 100px;
 }
 
 #loginPageContainer {
