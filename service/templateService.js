@@ -1,8 +1,8 @@
 const admin = require('../firebase')
 const db = admin.firestore()
-db.settings({ignoreUndefinedProperties: true})
+db.settings({ ignoreUndefinedProperties: true })
 
-const { deleteFileCDN: deleteImageCDN } = require("./cdnService")
+const { deleteFileCDN } = require("./cdnService")
 
 async function createTemplate(templateData) {
     return db.collection("templates").add(templateData)
@@ -38,18 +38,44 @@ async function deleteTemplate(templateId) {
     if (docSnap.exists) {
         const data = docSnap.data()
         const thumbnailImageId = data.thumbnail.id
+        const templateHBSId = data.templateHBS.id
 
         await docRef.delete()
-        await deleteImageCDN(thumbnailImageId)
+        await deleteFileCDN(thumbnailImageId)
+        await deleteFileCDN(templateHBSId)
     }
 }
 
 async function writeInvitationData(ownerId, fields, files, templateId) {
-    console.log("template id ", templateId);
-    
-    return db.collection("InvitationData").add({
-        ownerId, fields, files, templateId, createdAt: admin.firestore.FieldValue.serverTimestamp()
-    })
+    try {
+        console.log("1. template id:", templateId);
+
+        const templateData = await getTemplates(templateId);
+
+        console.log("2. templateData:", templateData);
+        console.log("3. templateHBS:", templateData[0]?.templateHBS);
+
+        const invitationData = {
+            ownerId,
+            fields,
+            files,
+            templateId,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            templateHBS: templateData[0]?.templateHBS
+        };
+
+        console.log("4. INVITATION DATA:", invitationData);
+
+        const result = await db.collection("InvitationData").add(invitationData);
+
+        console.log("5. CREATED:", result.id);
+
+        return result;
+
+    } catch (error) {
+        console.error("writeInvitationData ERROR:", error);
+        throw error;
+    }
 }
 
 module.exports = {

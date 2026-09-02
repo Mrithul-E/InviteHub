@@ -19,14 +19,19 @@
 <script>
     $(document).ready(function () {
         var formData = {{{templatesData}}};
+        console.log(formData)
         const formError = $("#formError")
         const formSuccess = $("#formSuccess")
         const templateId = formData[0].id
 
-        $("#renderArea").formRender({
-            dataType: 'json',
-            formData: formData[0].fieldsData
-        });
+        if (formData[0].formHBS) {
+            $("#renderArea").html(formData[0].formHBS)
+        } else if (formData[0].fieldsData.length !== 0) {
+            $("#renderArea").formRender({
+                dataType: 'json',
+                formData: formData[0].fieldsData
+            });
+        }
 
         $("#templateForm").on("submit", function (e) {
             e.preventDefault()

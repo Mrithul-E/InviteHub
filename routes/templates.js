@@ -123,38 +123,45 @@ router.post("/invitationData", requireAuth, function (req, res) {
     }
 
     for (const fieldName in files) {
-      filesPlainObj[fieldName] = []
+      try {
+        filesPlainObj[fieldName] = []
 
-      for (const file of files[fieldName]) {
-        if (file.size > maxTotalFileSize) {
+        for (const file of files[fieldName]) {
+          if (file.size > maxTotalFileSize) {
+            await fs.promises.unlink(file.filepath);
+
+            return res.status(413).json({
+              message: `Request size too large. Total size exceeds ${(maxTotalFileSize / 1024 / 1024).toFixed(2)} MB limit.`
+            });
+          } else if (file.size === 0) {
+            await fs.promises.unlink(file.filepath)
+            continue
+          }
+
+          const resp = await uploadFileCDN(file.originalFilename, file.filepath, file.mimetype)
+          // not AI genarated, copied from formidable file object lol..
+          filesPlainObj[fieldName].push({
+            size: file.size,
+            filepath: file.filepath,
+            newFilename: file.newFilename,
+            mimetype: file.mimetype,
+            mtime: file.mtime,
+            originalFilename: file.originalFilename,
+            cdn: resp
+          })
+
           await fs.promises.unlink(file.filepath);
-
-          return res.status(413).json({
-            message: `Request size too large. Total size exceeds ${(maxTotalFileSize/1024/1024).toFixed(2)} MB limit.`
-          });
-        } else if (file.size === 0) {
-          await fs.promises.unlink(file.filepath)
-          continue
         }
-
-        const resp = await uploadFileCDN(file.originalFilename, file.filepath, file.mimetype)
-        // not AI genarated, copied from formidable file object lol..
-        filesPlainObj[fieldName].push({
-          size: file.size,
-          filepath: file.filepath,
-          newFilename: file.newFilename,
-          mimetype: file.mimetype,
-          mtime: file.mtime,
-          originalFilename: file.originalFilename,
-          cdn: resp
-        })
-
-        await fs.promises.unlink(file.filepath);
+      } catch (error) {
+        console.log(error)
+        return res.status(400).json({
+          message: "Form parsing failed.",
+        });
       }
     }
 
     Object.entries(fields).forEach(
-      ([key,val]) => {
+      ([key, val]) => {
         fields[key] = val[0]
       }
     )

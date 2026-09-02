@@ -1,162 +1,257 @@
 <!doctype html>
+
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{fields.pageTitle}}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;500&display=swap"
-        rel="stylesheet">
-    <style>
-        body {
-            font-family: Poppins, sans-serif;
-            background: #f8f5f1;
-        }
+<head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .hero {
-            min-height: 100vh;
-            background: linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)), url("{{files.heroImage.cdn}}") center/cover;
-        }
+<title>{{fields.pageTitle}}</title>
 
-        .gold {
-            color: #b88b4a;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous">
 
-        h1,
-        h2,
-        h3 {
-            font-family: Cinzel, serif;
-        }
+<link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;500&display=swap"
+    rel="stylesheet">
 
-        .custom-card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, .12);
-        }
+<style>
+    body {
+        font-family: Poppins, sans-serif;
+        background: #f8f5f1;
+    }
 
-        .gallery img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
+    .hero {
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)),
+            url("{{files.heroImage.[0].cdn.url}}") center/cover;
+    }
 
-        footer {
-            background: #212529;
-            color: white;
-        }
-    </style>
+    .gold {
+        color: #b88b4a;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-family: Cinzel, serif;
+    }
+
+    .custom-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .12);
+    }
+
+    .gallery img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    footer {
+        background: #212529;
+        color: white;
+    }
+</style>
+
 </head>
 
 <body>
-    <section class="hero d-flex align-items-center py-3">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-8">
-                    <div class="card text-center custom-card p-5">
-                        <h1 class="display-4 gold">Wedding Invitation</h1>
-                        <p class="lead">Together with our families</p>
-                        <p>We joyfully invite you to celebrate the beginning of our new journey together.</p>
 
-                        <hr class="my-4">
+<!-- Hero / Invitation -->
+<section class="hero d-flex align-items-center py-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-8">
 
-                        <h2 class="gold">{{fields.groomName}}</h2>
-                        <h4 class="my-3">&</h4>
-                        <h2 class="gold">{{fields.brideName}}</h2>
+                <div class="card text-center custom-card p-5">
 
-                        <div class="row mt-5">
-                            <div class="col-md-6">
-                                <h5>Parents of Groom</h5>
-                                <p>{{fields.groomParentsName}}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Parents of Bride</h5>
-                                <p>{{fields.brideParentsName}}</p>
-                            </div>
+                    <h1 class="display-4 gold">Wedding Invitation</h1>
+
+                    <p class="lead">
+                        Together with our families
+                    </p>
+
+                    <p>
+                        We joyfully invite you to celebrate the beginning
+                        of our new journey together.
+                    </p>
+
+                    <hr class="my-4">
+
+                    <h2 class="gold">{{fields.groomName}}</h2>
+
+                    <h4 class="my-3">&amp;</h4>
+
+                    <h2 class="gold">{{fields.brideName}}</h2>
+
+                    <div class="row mt-5">
+
+                        <div class="col-md-6">
+                            <h5>Parents of Groom</h5>
+                            <p>{{fields.groomParentsName}}</p>
                         </div>
+
+                        <div class="col-md-6">
+                            <h5>Parents of Bride</h5>
+                            <p>{{fields.brideParentsName}}</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Wedding Details -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="gold mb-5 text-center">
+            WEDDING DETAILS
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h4>Date</h4>
+                        <p>{{fields.weddingDate}}</p>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h4>Time</h4>
+                        <p>{{fields.weddingTime}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h4>Venue</h4>
+                        <p>{{fields.venueName}}</p>
+
+                        <a href="{{fields.mapUrl}}"
+                            class="btn btn-warning"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            View Map
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
-    <section class="py-5">
-        <h2 class="gold mb-5 text-center">WEDDING DETAILS</h2>
-        <div class="container">
-            <div class="row g-4">
+    </div>
+</section>
+
+
+<!-- Our Story -->
+<section class="py-5 text-center bg-white">
+    <div class="container">
+
+        <h2 class="gold mb-5">
+            Our Story
+        </h2>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <p>{{fields.storyDescription}}</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Gallery -->
+<section class="py-5 text-center">
+    <div class="container">
+
+        <h2 class="gold mb-5">
+            GALLERY
+        </h2>
+
+        <div class="row g-4 gallery justify-content-center">
+
+            {{#each files.gallery}}
                 <div class="col-md-4">
-                    <div class="card h-100 text-center">
-                        <div class="card-body">
-                            <h4>{{fields.dateLabel}}</h4>
-                            <p>{{fields.weddingDate}}</p>
-                        </div>
-                    </div>
+                    <img src="{{cdn.url}}" alt="Wedding photo" loading="lazy">
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 text-center">
-                        <div class="card-body">
-                            <h4>{{fields.timeLabel}}</h4>
-                            <p>{{fields.weddingTime}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 text-center">
-                        <div class="card-body">
-                            <h4>{{fields.venueLabel}}</h4>
-                            <p>{{fields.venueName}}</p>
-                            <a href="{{fields.mapUrl}}" class="btn btn-warning">{{fields.mapButtonText}}</a>
-                        </div>
-                    </div>
-                </div>
+            {{/each}}
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Contact -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+
+        <h2 class="gold mb-5">
+            CONTACT
+        </h2>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                📞 {{fields.phoneNumber}}
             </div>
-        </div>
-    </section>
-    <section class="py-5 text-center bg-white">
-        <h2 class="gold mb-5">Our Story</h2>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <p>{{fields.storyDescription}}</p>
-                </div>
+
+            <div class="col-md-4">
+                💬 {{fields.whatsappNumber}}
             </div>
-        </div>
-    </section>
-    <section class="py-5 text-center">
-        <h2 class="gold mb-5">GALLERY</h2>
-        <div class="container">
-            <div class="row g-4 gallery justify-content-center">
-                {{#each files}}
-                    {{#each this}}
-                        <div class="col-md-4">
-                            <img src="{{cdn.url}}">
-                        </div>
-                    {{/each}}
-                {{/each}}
+
+            <div class="col-md-4">
+                <a href="mailto:{{fields.emailAddress}}"
+                    class="text-decoration-none text-reset">
+                    ✉ {{fields.emailAddress}}
+                </a>
             </div>
+
         </div>
-    </section>
-    <section class="py-5 bg-light">
-        <div class="container text-center">
-            <h2 class="gold mb-5">CONTACT</h2>
-            <div class="row">
-                <div class="col-md-4">📞 {{fields.phoneNumber}}</div>
-                <div class="col-md-4">💬 {{fields.whatsappNumber}}</div>
-                <div class="col-md-4"><a href="mailto:{{fields.emailAddress}}" class="text-decoration-none text-reset">✉ {{fields.emailAddress}}</a></div>
-            </div>
-        </div>
-    </section>
-    <footer class="py-5 text-center">
-        <div class="container">
-            <h3>We Can't Wait To Celebrate With You</h3>
-            <p class="mb-0">Thank you for being a part of our special day.</p>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="py-5 text-center">
+    <div class="container">
+
+        <h3>
+            We Can't Wait To Celebrate With You
+        </h3>
+
+        <p class="mb-0">
+            Thank you for being a part of our special day.
+        </p>
+
+    </div>
+</footer>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous">
+</script>
+
 </body>
 
 </html>

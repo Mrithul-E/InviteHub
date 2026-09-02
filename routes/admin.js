@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto')
 const fs = require("fs")
+const os = require('os')
+const path = require('path')
 
 const { createTemplate } = require("../service/templateService")
 const { uploadImageCDN, uploadFileCDN } = require("../service/cdnService")
@@ -30,21 +32,26 @@ router.post(
         return;
       }
 
-      // req.body.templateName 
-      const filename = `${crypto.randomUUID()}.hbs`
-      const templateHbsFilePath = path.join(os.tmpdir(), "inviteHub", filename)
-      await fs.writeFile(templateHbsFilePath, req.body.templateHBS, "utf8");
+      let templateHBS = null
 
-      const templateHBS = await uploadFileCDN(filename, templateHbsFilePath, "text/plain")
+      if (req.body.templateHBS) {
+        const filename = `${crypto.randomUUID()}.hbs`
+        const templateHbsFilePath = path.join(os.tmpdir(), "inviteHub", filename)
+        await fs.promises.writeFile(templateHbsFilePath, req.body.templateHBS, "utf8");
+
+        templateHBS = await uploadFileCDN(filename, templateHbsFilePath, "text/plain")
+
+        fs.unlinkSync(templateHbsFilePath)
+      }
+
       const thumbnail = await uploadImageCDN(req.file.buffer, req.body.templateName, true)
-
-      fs.unlinkSync(templateHbsFilePath)
       
       const templateData = {
         ...req.body,
         fieldsData: JSON.parse(req.body.fieldsData),
         thumbnail,
-        templateHBS
+        templateHBS,
+
       }
 
       console.log(templateData)
