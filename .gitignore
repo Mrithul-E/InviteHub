@@ -19,3 +19,4 @@ Thumbs.db
 *.sw?
 temp/
 tmp/
+views/templates/wedding_single_page.hbs
