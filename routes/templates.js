@@ -8,7 +8,8 @@ const os = require("os")
 
 const { getTemplates, writeInvitationData } = require("../service/templateService");
 const { uploadFileCDN } = require("../service/cdnService");
-const { requireAuth } = require('../middlewares/authMiddleware')
+const { requireAuth } = require('../middlewares/authMiddleware');
+const { url } = require('inspector');
 
 const tempDir = path.join(os.tmpdir(), "inviteHub")
 
@@ -166,12 +167,11 @@ router.post("/invitationData", requireAuth, function (req, res) {
       }
     )
 
-    await writeInvitationData(ownerId, fields, filesPlainObj, fields.templateId)
+    const result = await writeInvitationData(ownerId, fields, filesPlainObj, fields.templateId)
 
     return res.status(200).json({
       message: "Upload successful",
-      body: fields,
-      files: filesPlainObj
+      url: "/invitation/"+result.id
     });
   });
 });
