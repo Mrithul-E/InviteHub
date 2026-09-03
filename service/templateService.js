@@ -48,12 +48,7 @@ async function deleteTemplate(templateId) {
 
 async function writeInvitationData(ownerId, fields, files, templateId) {
     try {
-        console.log("1. template id:", templateId);
-
         const templateData = await getTemplates(templateId);
-
-        console.log("2. templateData:", templateData);
-        console.log("3. templateHBS:", templateData[0]?.templateHBS);
 
         const invitationData = {
             ownerId,
@@ -61,20 +56,14 @@ async function writeInvitationData(ownerId, fields, files, templateId) {
             files,
             templateId,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            templateHBS: templateData[0]?.templateHBS
+            templateHBS: templateData[0].templateHBS
         };
-
-        console.log("4. INVITATION DATA:", invitationData);
 
         const result = await db.collection("InvitationData").add(invitationData);
 
-        console.log("5. CREATED:", result.id);
-
         return result;
-
     } catch (error) {
-        console.error("writeInvitationData ERROR:", error);
-        throw error;
+        throw error; // ^_^
     }
 }
 
