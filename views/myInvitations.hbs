@@ -1,0 +1,73 @@
+<div class="table-responsive m-5">
+    <table class="table table-bordered table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Invitations</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="invitationsTableBody">
+            {{#each invitations}}
+            <tr>
+                <td>
+                    <a href="/invitation/{{id}}" target="_blank">
+                        {{id}}
+                    </a>
+                </td>
+                <td>
+                    <span class="created-at" data-date="{{createdAt}}">
+                        {{createdAt}}
+                    </span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm delete-invitation" data-id="{{id}}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(".created-at").each(function () {
+        const date = new Date($(this).data("date"));
+
+        $(this).text(
+            date.toLocaleString(undefined, {
+                dateStyle: "medium",
+                timeStyle: "short"
+            })
+        );
+    });
+
+    $(".delete-invitation").on("click", async function () {
+        const button = $(this);
+        const id = button.data("id");
+
+        if (!confirm("Are you sure you want to delete this invitation?")) {
+            return;
+        }
+        button.prop("disabled", true).text("Deleting...");
+
+        try {
+            const response = await fetch(`/invitation/${id}`,{
+                    method: "DELETE"
+                    }
+                );
+
+            if (!response.ok) {
+                throw new Error(`Delete failed, network request error (status: ${response.status})`);
+            }
+
+            button.closest("tr").remove();
+        } catch (error) {
+            console.error(error);
+
+            alert("Failed to delete invitation");
+            button.prop("disabled", false).text("Delete");
+        }
+    });
+</script>

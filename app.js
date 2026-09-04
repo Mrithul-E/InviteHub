@@ -8,6 +8,7 @@ const favicon = require('serve-favicon');
 var indexRouter = require('./routes/index');
 var templatesRouter = require('./routes/templates')
 var invitationRouter = require('./routes/invitation')
+var myInvitationsRouter = require('./routes/MyInvitations')
 var adminRouter = require('./routes/admin')
 
 const { requireAuth, attachUser, requireAdmin } = require("./middlewares/authMiddleware")
@@ -34,6 +35,7 @@ app.use(attachUser)
 app.use('/', indexRouter);
 app.use('/templates', templatesRouter)
 app.use('/invitation', invitationRouter)
+app.use('/My-Invitations', myInvitationsRouter)
 app.use('/admin', requireAdmin, adminRouter)
 
 // catch 404 and forward to error handler
