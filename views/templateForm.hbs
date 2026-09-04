@@ -25,10 +25,11 @@
 <script>
     $(document).ready(function () {
         var formData = {{{templatesData}}};
-        console.log(formData)
         const formError = $("#formError")
         const formSuccess = $("#formSuccess")
         const templateId = formData[0].id
+
+        console.log(formData)
 
         if (formData[0].formHBS) {
             $("#renderArea").html(formData[0].formHBS)
@@ -117,7 +118,7 @@
 
         });
 
-        #("#copyBtn").on('click', function () {
+        $("#copyBtn").on('click', async function () {
             const url = $("#invitationLink").attr('href')
             await navigator.clipboard.writeText(url)
 

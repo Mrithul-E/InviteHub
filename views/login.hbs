@@ -31,31 +31,33 @@
 </div>
 
 <script>
-    $('#google-login-btn').on('click', function () {
-        // Pull methods directly out of global window scope
-        window.firebaseSignIn(window.auth, window.googleProvider)
-            .then(async (result) => {
-                const idToken = await result.user.getIdToken();
-                console.log('Token fetched successfully:', idToken);
+    $(document).ready(function () {
+        $('#google-login-btn').on('click', function () {
+            window.firebaseSignIn(window.auth, window.googleProvider)
+                .then(async (result) => {
+                    const idToken = await result.user.getIdToken();
+                    console.log('Token fetched successfully:', idToken);
 
-                // Fire token off to Express via jQuery AJAX
-                $.ajax({
-                    url: '/sessionLogin',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ idToken: idToken }),
-                    success: function () {
-                        alert("Login successful")
-                        window.location.replace('/');
-                        console.log('logged in..')
-                    },
-                    error: function (err) {
-                        console.error(err);
-                        alert('Authentication failed.');
-                        window.location.href = "/login"
-                    }
-                });
-            })
-            .catch((error) => console.error("Sign-in error: ", error));
-    });
+                    $.ajax({
+                        url: '/sessionLogin',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ idToken: idToken }),
+                        success: function () {
+                            alert("Login successful")
+                            window.location.replace('/');
+                            console.log('logged in..')
+                        },
+                        error: function (err) {
+                            console.error(err);
+                            alert('Authentication failed.');
+                            window.location.href = "/login"
+                        }
+                    });
+                })
+                .catch((error) => console.error("Sign-in error: ", error));
+        });
+
+        $("#loginBtn").hide()
+    })
 </script>
