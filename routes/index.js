@@ -1,7 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const admin = require("../firebase") 
+const rateLimit = require("express-rate-limit")
 const {saveUserLogin} = require("../service/userService")
+
+const sessionLoginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 5,
+    message: {
+        error: "Too many login attempts. Please try again after some times."
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+})
 
 
 /* GET home page. */
@@ -13,7 +24,7 @@ router.get("/login", (req, res) => {
   res.render('login', {"title" : "InviteHub - Login"})
 })
 
-router.post("/sessionLogin", async (req,res) => {
+router.post("/sessionLogin", sessionLoginLimiter, async (req,res) => {
   const idToken = req.body.idToken;
   const expiresIn = 60 * 60 * 24 * 13 * 1000;
 
