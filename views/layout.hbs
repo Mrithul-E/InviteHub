@@ -172,14 +172,13 @@
 
       const logoutButton = $("#logout-btn")
       const profilePicture = $("#userPicture")
-      const img = profilePicture[0];
       const userMenu = $("#userMenu")
       const userMenuDrownArrow = $('#userMenuDrownArrow')
       const userContainer = $("#userContainer")
       const userDisplayName = "{{userRecord.displayName}}"
 
       // userDisplayName && img.naturalWidth === 0
-      if (true) {
+      if (userDisplayName) {
         const canvas = document.createElement('canvas')
         canvas.width = profilePicture.attr('width')
         canvas.height = profilePicture.attr('height')
