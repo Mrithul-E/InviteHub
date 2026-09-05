@@ -88,4 +88,4 @@ Live Demo: [InviteHub](www.mrithul.in)
 # Acknowlodgements
 
 Thanks to [Formidable](https://github.com/node-formidable/formidable) (initially developed by [@felixge](https://github.com/felixge))
-for making the total file size limiting easy
+for making the total file size limiting in request easy
