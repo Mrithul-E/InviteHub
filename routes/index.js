@@ -50,4 +50,17 @@ router.get('/logout-48djf9iejjcokecuue884jseidj2koejfutnckwiejs', (req,res) => {
   res.redirect('/login')
 })
 
+// ----------------------------------------
+
+router.get('/about', (req,res) => {
+  res.render('pages/about', {"title": "InviteHub - About"})
+})
+
+router.get('/privacy-policy', (req,res) => {
+  res.render('pages/privacy_policy', {"title": "InviteHub - Privacy policies"})
+})
+
+router.get('/terms', (req,res) => {
+  res.render('pages/terms', {"title": "InviteHub - Terms of Service"})
+})
 module.exports = router;
