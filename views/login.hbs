@@ -45,7 +45,11 @@
                         data: JSON.stringify({ idToken: idToken }),
                         success: function () {
                             alert("Login successful")
-                            window.location.replace('/');
+
+                            const params = new URLSearchParams(window.location.search)
+                            const redirectUrl = params.get("redirect") || '/'
+                            window.location.replace(redirectUrl);
+                            
                             console.log('logged in..')
                         },
                         error: function (err) {

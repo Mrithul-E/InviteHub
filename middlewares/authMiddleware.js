@@ -36,9 +36,11 @@ async function attachUser(req, res, next) {
 
 async function requireAuth(req, res, next) {
     if (!res.locals.isLoggedIn) {
-        return res.redirect('/login')
+        const redirectUrl = req.originalUrl
+
+        return res.redirect(`/login?redirect=${encodeURIComponent(redirectUrl)}`)
     }
-    
+
     next();
 }
 

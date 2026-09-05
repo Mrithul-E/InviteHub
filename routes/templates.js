@@ -80,7 +80,7 @@ router.get('/a', function (req, res) {
   })
 })
 
-router.get('/:templateId', async function (req, res, next) {
+router.get('/:templateId', requireAuth, async function (req, res, next) {
   const templateId = req.params.templateId
   const templatesData = await getTemplates(templateId)
 
