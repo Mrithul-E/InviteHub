@@ -34,7 +34,7 @@ router.post("/sessionLogin", async (req,res) => {
   }
 })
 
-router.get('/logout', (req,res) => {
+router.get('/logout-48djf9iejjcokecuue884jseidj2koejfutnckwiejs', (req,res) => {
   res.clearCookie('session');
   res.redirect('/login')
 })
