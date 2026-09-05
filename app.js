@@ -15,6 +15,8 @@ const { requireAuth, attachUser, requireAdmin } = require("./middlewares/authMid
 
 var app = express();
 
+app.set("trust proxy", 1)
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
