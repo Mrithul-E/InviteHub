@@ -87,7 +87,9 @@ InviteHub also allows to create form with a simple block of HTML
 
 Live Demo: [InviteHub](https://invitehub.mrithul.in/)
 
-# Acknowlodgements
+# Acknowledgements
 
-Thanks to [Formidable](https://github.com/node-formidable/formidable) (initially developed by [@felixge](https://github.com/felixge))
+- Used [Chatgpt](chatgpt.com) to generate the template category list
+
+- Thanks to [Formidable](https://github.com/node-formidable/formidable) (initially developed by [@felixge](https://github.com/felixge))
 for making the total file size limiting in request easy
