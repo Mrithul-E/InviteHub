@@ -65,6 +65,10 @@ const templateCategories = [
   {
     "id": "religious-event",
     "name": "Religious Event"
+  },
+  {
+    "id": "Party-Ceremony",
+    "name": "Party / Ceremony"
   }
 ]
 
