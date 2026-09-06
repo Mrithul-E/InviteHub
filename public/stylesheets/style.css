@@ -78,13 +78,26 @@ nav .container-fluid {
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 
 #hero-icon {
   width: 115px;
   height: auto;
+}
+
+#demoVideoContainer {
+  padding: 4px;
+  border-radius: 24px;
+  background: var(--accent-purple);
+  box-shadow: 0 0 11px 4px var(--accent-purple);
+}
+
+#demoVideo {
+  display: block;
+  border-radius: 20px;
 }
 
 #logo-text {

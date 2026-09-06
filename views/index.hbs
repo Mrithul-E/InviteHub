@@ -1,5 +1,5 @@
 <div class="hero-image container-fluid">
-    <div class="row h-100">
+    <div class="row">
         <div class="hero-content col-md-6 d-flex align-items-center flex-column">
             <div class="d-flex justify-content-between align-items-center pt-5 gap-2">
                 <img src="images/Logo_Transparent_NoBuffer.png" alt="" id="hero-icon">
@@ -14,7 +14,12 @@
             </div>
             <div class="hero-button-container pt-4">
                 <button class="purple-btn" id="startBtn">Get Started</button>
-                <button class="white-btn">Watch Demo</button>
+                <button class="white-btn" id="watchDemoBtn">Watch Demo</button>
+            </div>
+            <div class="w-100 d-none my-3" id="demoVideoContainer">
+                <video src="https://github.com/user-attachments/assets/4d0e232f-aeee-414b-bf0e-31e5e015580c" controls
+                    preload="metadata" class="w-100" id="demoVideo">
+                </video>
             </div>
         </div>
         <div class="col-md-6 d-none d-sm-none d-md-flex hero-graphics align-items-center justify-content-center">
@@ -25,8 +30,34 @@
 
 <script>
     $(document).ready(function () {
+        let initialScrollPosition = 0;
+
         $("#startBtn").on('click', function () {
             window.location.href = '/templates'
+        })
+
+        $("#watchDemoBtn").on('click', function () {
+            $("#demoVideoContainer").toggleClass('d-none')
+
+            if (!$("#demoVideoContainer").hasClass('d-none')) {
+                initialScrollPosition = window.screenY
+
+                $("#demoVideoContainer")[0].scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+                $("#demoVideo")[0].play()
+                $(this).text("Close Demo")
+            } else {
+                window.scrollTo({
+                    top: initialScrollPosition,
+                    behavior: "smooth"
+                })
+
+                $("#demoVideo")[0].pause()
+                $(this).text("Watch Demo")
+            }
         })
     })
 </script>
