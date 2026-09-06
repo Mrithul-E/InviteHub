@@ -118,15 +118,21 @@
 
         });
 
-        $("#copyBtn").on('click', async function () {
-            const url = $("#invitationLink").attr('href')
-            await navigator.clipboard.writeText(url)
+        $(document).on("click", "#copyBtn", async function () {
+            const url = $("#invitationLink").prop("href");
 
-            $(this).text("Copied!")
-            setInterval(()=>{
-                $(this).text("copy")
-            }, 1500)
-        })
+            try {
+                await navigator.clipboard.writeText(url);
+
+                $(this).text("Copied!");
+
+                setTimeout(() => {
+                    $(this).text("Copy");
+                }, 1500);
+            } catch (error) {
+                console.error("Copy failed:", error);
+            }
+        });
 
     });
 </script>
