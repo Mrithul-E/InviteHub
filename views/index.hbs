@@ -30,7 +30,8 @@
 
 <script>
     $(document).ready(function () {
-        let initialScrollPosition = 0;
+        let initialScrollPosition = 0
+        let videoSrc = $("#demoVideo").attr('src')
 
         $("#startBtn").on('click', function () {
             window.location.href = '/templates'
@@ -40,6 +41,7 @@
             $("#demoVideoContainer").toggleClass('d-none')
 
             if (!$("#demoVideoContainer").hasClass('d-none')) {
+
                 initialScrollPosition = window.screenY
 
                 $("#demoVideoContainer")[0].scrollIntoView({
@@ -47,6 +49,7 @@
                     block: "center"
                 });
 
+                $("#demoVideo").attr('src', videoSrc)
                 $("#demoVideo")[0].play()
                 $(this).text("Close Demo")
             } else {
@@ -56,6 +59,9 @@
                 })
 
                 $("#demoVideo")[0].pause()
+                $("#demoVideo")[0].removeAttribute('src')
+                $("#demoVideo")[0].load();
+                
                 $(this).text("Watch Demo")
             }
         })
