@@ -3,6 +3,9 @@ A website for creating digital invitation webpages by simply selecting a templat
 
 [Screen Recording 2026-09-06 105108.webm](https://github.com/user-attachments/assets/4d0e232f-aeee-414b-bf0e-31e5e015580c)
 
+Now many templates are listed, more can be added by the admin in the future !!!
+<img width="1583" height="762" alt="image" src="https://github.com/user-attachments/assets/1c02268f-4bbc-47e7-b689-0407d6073bf1" />
+
 # Try InviteHub!
 Create an invitation, choose a template, fill in its custom form, and get a shareable invitation page.
 
