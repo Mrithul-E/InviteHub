@@ -6,7 +6,7 @@ A website for creating digital invitation webpages by simply selecting a templat
 # Try InviteHub!
 Create an invitation, choose a template, fill in its custom form, and get a shareable invitation page.
 
-Live Demo: [InviteHub](www.mrithul.in)
+Live Demo: [InviteHub](https://invitehub.mrithul.in/)
 
 # Features
 - **Sharable invitation links**
@@ -85,7 +85,7 @@ InviteHub also allows to create form with a simple block of HTML
 
 # Quick start
 
-Live Demo: [InviteHub](www.mrithul.in)
+Live Demo: [InviteHub](https://invitehub.mrithul.in/)
 
 # Acknowlodgements
 
