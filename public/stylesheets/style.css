@@ -1,10 +1,10 @@
 :root {
   --light-bg: #F5F5F5;
   --dark-bg: #303841;
-  --accent-purple: #B86DB8;
-  --accent-purple-dark: #7C3D8A;
-  --accent-pink: #E88ACB;
-  --accent-pink-light: #F7D6EE;
+  --purple: #B86DB8;
+  --purple-dark: #7C3D8A;
+  --pink: #E88ACB;
+  --pink-light: #F7D6EE;
 }
 
 body {
@@ -24,8 +24,8 @@ nav {
 }
 
 .navbar-nav {
-  --bs-navbar-color: var(--dark-bg);
-  --bs-navbar-active-color: var(--accent-teal)
+  /* bypassing native bootstrap colours lol */
+  --bs-navbar-active-color: none;
 }
 
 .nav-link.active {
@@ -45,7 +45,7 @@ nav {
   font-style: normal;
   letter-spacing: 0.5px;
   font-size: medium;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 }
 
 #navbarSupportedContent ul {
@@ -91,8 +91,8 @@ nav .container-fluid {
 #demoVideoContainer {
   padding: 4px;
   border-radius: 24px;
-  background: var(--accent-purple);
-  box-shadow: 0 0 11px 4px var(--accent-purple);
+  background: var(--purple);
+  box-shadow: 0 0 11px 4px var(--purple);
 }
 
 #demoVideo {
@@ -102,7 +102,7 @@ nav .container-fluid {
 
 #logo-text {
   font-family: "Poppins", sans-serif;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 }
 
 #logo-text h1 {
@@ -116,13 +116,13 @@ nav .container-fluid {
 
 .hero-details {
   font-family: "Poppins", sans-serif;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 }
 
 .hero-details h1 {
   font-weight: 700;
   font-size: 4rem;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 
 }
 
@@ -136,7 +136,7 @@ nav .container-fluid {
 .hero-details h3 {
   font-weight: 400;
   font-size: 21px;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 
 }
 
@@ -166,9 +166,9 @@ nav .container-fluid {
 }
 
 .white-btn {
-  border: var(--accent-purple) solid;
+  border: var(--purple) solid;
   border-width: 1px;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 }
 
 .hero-graphics {
@@ -298,7 +298,7 @@ nav .container-fluid {
 .templates-card {
   overflow: hidden;
   aspect-ratio: 1;
-  border-color: var(--accent-purple);
+  border-color: var(--purple);
   border-radius: 10px;
   border-width: 2px;
   border-style: solid;
@@ -310,7 +310,7 @@ nav .container-fluid {
 
 .templates-card p {
   font-family: 'Poppins', sans-serif;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
   font-size: larger;
   font-weight: 500;
 }
@@ -322,7 +322,7 @@ nav .container-fluid {
 
 #createTemplate {
   position: relative;
-  color: var(--accent-purple-dark);
+  color: var(--purple-dark);
 }
 
 #createTemplate i {
@@ -414,5 +414,5 @@ nav .container-fluid {
   border-style: solid;
   padding: 8px;
   outline-offset: unset;
-  outline-color: var(--accent-purple-dark);
+  outline-color: var(--purple-dark);
 }
