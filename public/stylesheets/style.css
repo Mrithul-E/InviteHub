@@ -19,26 +19,26 @@ html {
 }
 
 
-nav {
-  background-color: var(--light-bg);
+nav.top-navbar{
+  background-color: #f5f5f5f2;
 }
 
-.navbar-nav {
+.top-navbar .navbar-nav {
   /* bypassing native bootstrap colours lol */
   --bs-navbar-active-color: none;
 }
 
-.nav-link.active {
+.top-navbar .nav-link.active {
   border-bottom: 2px solid var(--dark-bg);
 }
 
-.nav-link {
+.top-navbar .nav-link {
   display: inline-block;
   transition: transform 1s ease;
 }
 
 
-.nav-item {
+.top-navbar .nav-item {
   font-family: "Source Code Pro", monospace;
   font-optical-sizing: auto;
   font-weight: 600;
@@ -52,7 +52,7 @@ nav {
   gap: 50px;
 }
 
-nav .container-fluid {
+.top-navbar nav .container-fluid {
   position: relative;
 }
 
@@ -63,18 +63,18 @@ nav .container-fluid {
     transform: translateX(-50%);
   }
 
-  .nav-link:hover {
-    transform: scale(1.1);
+  .top-navbar .nav-link:hover {
+    transform: scale(1.03);
     border-bottom: 2px solid var(--dark-bg);
   }
 
-  .nav-link.active {
-    transform: scale(1.1);
+  .top-navbar .nav-link.active {
+    transform: scale(1.03);
   }
 }
 
 .hero-image {
-  background-image: url('/images/hero_bg.jpg');
+  background-image: url('/images/coolbackgrounds-topography-micron.png');
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -127,10 +127,7 @@ nav .container-fluid {
 }
 
 .hero-details h1 span {
-  background-image: linear-gradient(to right, #b44593, #f386c1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #e156ff;
 }
 
 .hero-details h3 {
@@ -148,7 +145,7 @@ nav .container-fluid {
 .hero-button-container button {
   width: 166px;
   height: 49px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: large;
@@ -156,7 +153,7 @@ nav .container-fluid {
 }
 
 .hero-button-container button:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
 }
 
 .purple-btn {
@@ -178,7 +175,7 @@ nav .container-fluid {
 .hero-graphics img {
   width: 79%;
   animation: backandforth 4s linear infinite;
-  padding-bottom: 100px;
+  /* padding-bottom: 100px; */
 }
 
 #loginPageContainer {
