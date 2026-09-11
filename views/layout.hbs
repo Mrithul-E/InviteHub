@@ -23,7 +23,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+    integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+    crossorigin="anonymous"></script>
   <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
 
   <script src="https://formbuilder.online/assets/js/form-render.min.js"></script>
@@ -177,8 +180,7 @@
 
       links.forEach((link) => {
         const href = link.getAttribute("href")
-
-        if (href.split("/")[1] === currentPageUrl.split("/")[1]) {
+        if (href.split("/")[1] === currentPageUrl.split("/")[1] && href.split("/")[0] === '') {
           link.classList.add("active")
         } else {
           link.classList.remove("active")
