@@ -47,7 +47,7 @@
                             alert("Login successful")
 
                             const params = new URLSearchParams(window.location.search)
-                            const redirectUrl = params.get("redirect") || '/'
+                            let redirectUrl = params.get("redirect") || '/'
 
                             if (!redirectUrl.startsWith('/') && redirectUrl.startsWith('//')) {
                                 redirectUrl = '/'
