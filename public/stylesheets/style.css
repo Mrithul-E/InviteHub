@@ -115,26 +115,24 @@ nav.top-navbar{
 }
 
 .hero-details {
-  font-family: "Poppins", sans-serif;
   color: var(--purple-dark);
 }
 
 .hero-details h1 {
+  font-family: "MonteCarlo", cursive;
   font-weight: 700;
-  font-size: 4rem;
-  color: var(--purple-dark);
+  font-size: 5rem;
 
+}
+
+.hero-details h3 {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 400;
+  font-size: 21px;
 }
 
 .hero-details h1 span {
   color: #e156ff;
-}
-
-.hero-details h3 {
-  font-weight: 400;
-  font-size: 21px;
-  color: var(--purple-dark);
-
 }
 
 .hero-button-container {
@@ -157,7 +155,7 @@ nav.top-navbar{
 }
 
 .purple-btn {
-  background-image: linear-gradient(to top, #b44593, #f386c1);
+  background-color: var(--purple);
   color: white;
   border: none;
 }
@@ -313,7 +311,7 @@ nav.top-navbar{
 }
 
 .templates-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
 }
 
