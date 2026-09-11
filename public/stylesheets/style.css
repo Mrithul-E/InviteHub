@@ -122,7 +122,6 @@ nav.top-navbar{
   font-family: "MonteCarlo", cursive;
   font-weight: 700;
   font-size: 5rem;
-
 }
 
 .hero-details h3 {
@@ -133,6 +132,16 @@ nav.top-navbar{
 
 .hero-details h1 span {
   color: #e156ff;
+}
+
+.home-content h1 {
+  color: var(--purple-dark);
+  font-family: Noto;
+}
+
+.home-content p {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
 }
 
 .hero-button-container {
