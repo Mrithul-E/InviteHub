@@ -48,6 +48,11 @@
 
                             const params = new URLSearchParams(window.location.search)
                             const redirectUrl = params.get("redirect") || '/'
+
+                            if (!redirectUrl.startsWith('/') && redirectUrl.startsWith('//')) {
+                                redirectUrl = '/'
+                            }
+
                             window.location.replace(redirectUrl);
                             
                             console.log('logged in..')
