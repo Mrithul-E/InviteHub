@@ -97,3 +97,14 @@ InviteHub also allows to create form with a simple block of HTML
 - Thanks to [Formidable](https://github.com/node-formidable/formidable)
 for making the total file size limiting in request easy
 I find It after many google searches
+
+# Note for Stardance shipwrghts
+
+- Readme is completely written by human:
+![zeroGPT](https://cdn.hackclub.com/01a094c1-ecdc-7e4c-a72a-35ecbd26e73f/ai_usage_reality.png)
+
+- The assets are made using Canva, Not Ai generated
+![Canav screenshot proof](https://cdn.hackclub.com/01a094c7-fe4f-77b5-8bf1-4fe9502d5360/Screenshot%202026-09-12%20141125.png)
+
+- The styling in this completely done by me, the fact is that this site has very little styling required. That styling and responsiveness are  mainly done by Bootstarp 5
+
