@@ -4,10 +4,14 @@ A website for creating digital invitation webpages by simply selecting a templat
 Now many templates are listed, more can be added by the admin in the future !!!
 <img width="1583" height="762" alt="image" src="https://github.com/user-attachments/assets/1c02268f-4bbc-47e7-b689-0407d6073bf1" />
 
-# Try InviteHub!
-Create an invitation, choose a template, fill in its custom form, and get a shareable invitation page.
+# How to use
 
 Live Demo: [InviteHub](https://invitehub.mrithul.in/)
+
+1. Select a template
+2. Fill out the form
+3. Submit the form
+4. Your template is ready, now you can copy the link and share it to anyone
 
 # Features
 - Can give sharable invitation links
@@ -30,7 +34,7 @@ Live Demo: [InviteHub](https://invitehub.mrithul.in/)
 
 - About, Privacy Policy and Terms - Includes the basic pages for a real public facing website
 
-# Tech Stack
+# Tech Stack I Used
 
 ### Frontend
 
@@ -58,9 +62,9 @@ Live Demo: [InviteHub](https://invitehub.mrithul.in/)
 - Hackclub CDN
 
 
-# Speciality
+# What's the main speciality 
 
-One of the main idea behind InviteHub is that **different invitaion template need different informations**
+The main idea behind InviteHub is that **different invitaion template need different informations**
 
 Example:
 
@@ -86,9 +90,10 @@ InviteHub also allows to create form with a simple block of HTML
 
 # Quick start
 
-Live Demo: [InviteHub](https://invitehub.mrithul.in/)
+[https://invitehub.mrithul.in/](https://invitehub.mrithul.in/)
 
 # Acknowledgements
 
 - Thanks to [Formidable](https://github.com/node-formidable/formidable)
 for making the total file size limiting in request easy
+I find It after many google searches
