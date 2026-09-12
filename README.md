@@ -106,5 +106,5 @@ I find It after many google searches
 - The assets are made using Canva, Not Ai generated
 ![Canav screenshot proof](https://cdn.hackclub.com/01a094c7-fe4f-77b5-8bf1-4fe9502d5360/Screenshot%202026-09-12%20141125.png)
 
-- The styling in this completely done by me, the fact is that this site has very little styling required. That styling and responsiveness are  mainly done by Bootstarp 5
+- The styling in this completely done by me, the fact is that this site has very little styling required. That styling and responsiveness are  mainly done using Bootstarp 5
 
